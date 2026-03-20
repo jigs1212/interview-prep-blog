@@ -1,11 +1,31 @@
-// TODO: Implement tag listing page
-// - Filter posts by tag
-// - Show paginated blog list
+import { getAllTags, getPostsByTag } from '@/lib/posts'
+import BlogList from '@/components/blog/BlogList'
 
-export async function generateStaticParams() {
-	return [{ tag: 'placeholder' }]
+export function generateStaticParams() {
+	return getAllTags().map(tag => ({ tag: tag.name }))
 }
 
-export default function TagPage() {
-	return <div>TODO: Tag page</div>
+export function generateMetadata({ params }: { params: { tag: string } }) {
+	const tag = decodeURIComponent(params.tag)
+	return {
+		title: `#${tag}`,
+		description: `All posts tagged with ${tag}`,
+	}
+}
+
+export default function TagPage({ params }: { params: { tag: string } }) {
+	const tag = decodeURIComponent(params.tag)
+	const posts = getPostsByTag(tag)
+
+	return (
+		<>
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold mb-2">#{tag}</h1>
+				<p className="text-[var(--fg-muted)]">
+					{posts.length} post{posts.length !== 1 ? 's' : ''} with this tag
+				</p>
+			</div>
+			<BlogList posts={posts} />
+		</>
+	)
 }
