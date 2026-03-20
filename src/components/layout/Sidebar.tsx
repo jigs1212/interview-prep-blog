@@ -2,14 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import type { CategoryCount, TagCount } from '@/types/blog'
 
 interface SidebarProps {
 	categories: CategoryCount[]
 	tags: TagCount[]
 }
-
-const basePath = '/interview-prep-blog'
 
 function slugify(text: string): string {
 	return text
@@ -22,20 +21,27 @@ function slugify(text: string): string {
 
 export default function Sidebar({ categories, tags }: SidebarProps) {
 	const pathname = usePathname()
+	const [isMounted, setIsMounted] = useState(false)
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	const currentPath = isMounted ? pathname ?? '' : ''
 
 	return (
 		<aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-[260px] bg-sidebar text-sidebar-text overflow-y-auto">
 			<div className="p-6">
-				<Link href={`${basePath}/`} className="block mb-8">
+				<Link href="/" className="block mb-8">
 					<h1 className="text-xl font-bold text-white">Interview Prep Hub</h1>
 					<p className="text-xs text-sidebar-text mt-1">Senior dev interview guides</p>
 				</Link>
 
 				<nav>
 					<Link
-						href={`${basePath}/`}
+						href="/"
 						className={`block px-3 py-2 rounded text-sm mb-1 transition-colors ${
-							pathname === `${basePath}` || pathname === `${basePath}/`
+							currentPath === '/' || currentPath === ''
 								? 'bg-sidebar-hover text-sidebar-active font-medium'
 								: 'hover:bg-sidebar-hover hover:text-sidebar-active'
 						}`}
@@ -48,13 +54,13 @@ export default function Sidebar({ categories, tags }: SidebarProps) {
 					</div>
 					{categories.map(cat => {
 						const catSlug = slugify(cat.name)
-						const catPath = `${basePath}/category/${catSlug}/`
+						const catPath = `/category/${catSlug}/`
 						return (
 							<Link
 								key={cat.name}
 								href={catPath}
 								className={`flex items-center justify-between px-3 py-2 rounded text-sm mb-0.5 transition-colors ${
-									pathname === catPath || pathname === catPath.slice(0, -1)
+									currentPath === catPath || currentPath === catPath.slice(0, -1)
 										? 'bg-sidebar-hover text-sidebar-active font-medium'
 										: 'hover:bg-sidebar-hover hover:text-sidebar-active'
 								}`}
@@ -72,13 +78,13 @@ export default function Sidebar({ categories, tags }: SidebarProps) {
 					</div>
 					<div className="flex flex-wrap gap-1.5 px-3">
 						{tags.map(tag => {
-							const tagPath = `${basePath}/tag/${encodeURIComponent(tag.name)}/`
+							const tagPath = `/tag/${encodeURIComponent(tag.name)}/`
 							return (
 								<Link
 									key={tag.name}
 									href={tagPath}
 									className={`text-xs px-2 py-1 rounded transition-colors ${
-										pathname === tagPath || pathname === tagPath.slice(0, -1)
+									currentPath === tagPath || currentPath === tagPath.slice(0, -1)
 											? 'bg-blue-600 text-white'
 											: 'bg-sidebar-hover text-sidebar-text hover:text-sidebar-active'
 									}`}
