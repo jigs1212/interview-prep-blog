@@ -9,7 +9,8 @@
     "prebuild": "npm run generate:og && npx tsx scripts/generate-search-index.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
@@ -27,6 +28,7 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

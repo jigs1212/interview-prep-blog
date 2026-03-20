@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interview Prep Hub
 
-## Getting Started
+A static blog for senior developer interview preparation, built with Next.js 14 and deployed to GitHub Pages.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?logo=tailwindcss)
+![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub_Pages-222?logo=github)
+
+## Local Development
 
 ```bash
+git clone https://github.com/<your-username>/interview-prep-blog.git
+cd interview-prep-blog
+cp .env.example .env.local
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000/interview-prep-blog/](http://localhost:3000/interview-prep-blog/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding a New Blog Post
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a markdown file in `src/content/` with this frontmatter:
 
-## Learn More
+```markdown
+---
+slug: "your-post-slug"
+title: "Your Post Title"
+description: "A short description for cards and SEO"
+category: "React"
+subcategory: "Hooks"
+tags: ["react", "hooks", "interview"]
+date: "2026-03-20"
+related: ["other-post-slug"]
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Your Content Here
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Write using h2 and h3 headings — they become the Table of Contents.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Build & Deploy
 
-## Deploy on Vercel
+```bash
+npm run build        # Generates OG images, search index, and static export
+npm run analyze      # Build with bundle analyzer
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deployment is automatic via GitHub Actions on push to `main`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Folder Structure
+
+```
+src/
+  app/
+    blog/[slug]/page.tsx      # Blog post detail
+    category/[name]/page.tsx   # Category listing
+    tag/[tag]/page.tsx         # Tag listing
+    page/[number]/page.tsx     # Paginated listing
+    layout.tsx                 # Root layout (sidebar + header)
+    page.tsx                   # Home page
+    sitemap.ts                 # Auto-generated sitemap
+    robots.ts                  # Robots.txt
+    globals.css                # Global styles + prose
+  components/
+    layout/
+      Sidebar.tsx              # Fixed left sidebar with categories/tags
+      Header.tsx               # Top bar with search + mobile menu
+      Footer.tsx               # Footer
+    blog/
+      BlogCard.tsx             # Post card with metadata
+      BlogList.tsx             # Grid of BlogCards
+      TableOfContents.tsx      # Scroll-spy TOC
+      ShareButtons.tsx         # LinkedIn, Twitter, WhatsApp, copy link
+      RelatedPosts.tsx         # Related posts grid
+      Pagination.tsx           # Page navigation
+      ReadingTime.tsx          # Reading time display
+    search/
+      SearchBar.tsx            # Fuse.js client-side search
+    ui/
+      Tag.tsx                  # Tag badge
+      CategoryBadge.tsx        # Category badge
+  content/                     # Markdown blog posts
+  lib/
+    posts.ts                   # Post data fetching + caching
+    toc.ts                     # TOC extraction from HTML
+    search.ts                  # Search index builder
+    utils.ts                   # slugify, formatDate
+    hooks/
+      useDebounce.ts           # Debounce hook for search
+  types/
+    blog.ts                    # TypeScript interfaces
+scripts/
+  generate-og-images.ts        # OG image generation (sharp)
+  generate-search-index.ts     # Search index generation
+```
+
+## MCP Servers (Recommended)
+
+These MCP servers enhance the Claude Code workflow for this project:
+
+1. **Context7** — Up-to-date library documentation
+2. **GitHub** — PR/issue management from the terminal
+3. **Filesystem** — Direct file operations
+4. **Fetch** — Web content retrieval
+5. **Sequential Thinking** — Complex problem decomposition
