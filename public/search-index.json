@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "react-hooks-deep-dive",
+    "title": "React Hooks Deep Dive",
+    "description": "Complete guide to React hooks for senior interviews",
+    "tags": [
+      "react",
+      "hooks",
+      "useState",
+      "useEffect"
+    ],
+    "category": "React",
+    "date": "2026-03-20"
+  },
+  {
+    "slug": "nextjs-app-router-guide",
+    "title": "Next.js App Router Complete Guide",
+    "description": "Everything you need to know about Next.js App Router for interviews",
+    "tags": [
+      "nextjs",
+      "app-router",
+      "server-components",
+      "routing"
+    ],
+    "category": "Next.js",
+    "date": "2026-03-19"
+  },
+  {
+    "slug": "typescript-generics-masterclass",
+    "title": "TypeScript Generics Masterclass",
+    "description": "Master TypeScript generics for senior developer interviews",
+    "tags": [
+      "typescript",
+      "generics",
+      "type-system",
+      "advanced-types"
+    ],
+    "category": "TypeScript",
+    "date": "2026-03-18"
+  }
+]
