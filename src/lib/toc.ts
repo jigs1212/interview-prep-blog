@@ -9,6 +9,14 @@ function slugify(text: string): string {
 		.trim()
 }
 
+export function addHeadingIds(htmlContent: string): string {
+	return htmlContent.replace(/<h([23])([^>]*)>(.*?)<\/h[23]>/gi, (_match, level, attrs, inner) => {
+		const text = inner.replace(/<[^>]*>/g, '').trim()
+		const id = slugify(text)
+		return `<h${level}${attrs} id="${id}">${inner}</h${level}>`
+	})
+}
+
 export function extractToc(htmlContent: string): TocItem[] {
 	const headingRegex = /<h([23])[^>]*>(.*?)<\/h[23]>/gi
 	const items: TocItem[] = []
