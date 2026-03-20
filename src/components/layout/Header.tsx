@@ -7,6 +7,15 @@ import type { CategoryCount, TagCount } from '@/types/blog'
 
 const basePath = '/interview-prep-blog'
 
+function slugify(text: string): string {
+	return text
+		.toLowerCase()
+		.replace(/[^a-z0-9\s-]/g, '')
+		.replace(/\s+/g, '-')
+		.replace(/-+/g, '-')
+		.trim()
+}
+
 interface HeaderProps {
 	categories?: CategoryCount[]
 	tags?: TagCount[]
@@ -81,7 +90,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 									{categories.map(cat => (
 										<Link
 											key={cat.name}
-											href={`${basePath}/category/${encodeURIComponent(cat.name)}/`}
+											href={`${basePath}/category/${slugify(cat.name)}/`}
 											onClick={() => setMobileMenuOpen(false)}
 											className="flex items-center justify-between px-3 py-2 rounded text-sm mb-0.5 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
 										>

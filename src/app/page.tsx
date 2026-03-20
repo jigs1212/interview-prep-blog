@@ -1,8 +1,17 @@
-import { getAllPosts } from '@/lib/posts'
+import { getPaginatedPosts } from '@/lib/posts'
 import BlogList from '@/components/blog/BlogList'
+import Pagination from '@/components/blog/Pagination'
+import type { Metadata } from 'next'
+
+const basePath = '/interview-prep-blog/page'
+
+export const metadata: Metadata = {
+	title: 'Interview Prep Hub',
+	description: 'Deep-dive articles for senior developer interviews',
+}
 
 export default function Home() {
-	const posts = getAllPosts()
+	const { posts, totalPages } = getPaginatedPosts(1)
 
 	return (
 		<>
@@ -13,6 +22,7 @@ export default function Home() {
 				</p>
 			</div>
 			<BlogList posts={posts} />
+			<Pagination currentPage={1} totalPages={totalPages} basePath={basePath} />
 		</>
 	)
 }
