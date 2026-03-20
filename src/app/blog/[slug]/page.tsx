@@ -48,7 +48,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 	const related = getRelatedPosts(post.related)
 
 	return (
-		<div className="lg:grid lg:grid-cols-[240px_1fr_160px] lg:gap-8">
+		<div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10">
 			{/* Left column — TOC */}
 			<aside className="hidden lg:block">
 				<div className="sticky top-24">
@@ -56,7 +56,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 				</div>
 			</aside>
 
-			{/* Center column — Article */}
+			{/* Main column — Article */}
 			<article className="min-w-0">
 				<header className="mb-8">
 					<h1 className="text-3xl font-bold mb-3">{post.title}</h1>
@@ -80,7 +80,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 				</div>
 
 				<div
-					className="prose"
+					className="prose max-w-none"
 					dangerouslySetInnerHTML={{ __html: post.content }}
 				/>
 
@@ -93,9 +93,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
 				<RelatedPosts posts={related} />
 			</article>
-
-			{/* Right column — reserved */}
-			<div className="hidden lg:block" />
 		</div>
 	)
 }

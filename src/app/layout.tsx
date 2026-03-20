@@ -32,7 +32,7 @@ export default function RootLayout({
 					<Sidebar categories={categories} tags={tags} />
 					<div className="flex-1 lg:ml-[260px]">
 						<Header categories={categories} tags={tags} />
-						<main className="px-4 py-8 sm:px-6 lg:px-10 max-w-4xl mx-auto">
+						<main className="px-6 py-8 sm:px-10 lg:px-16 xl:px-24">
 							{children}
 						</main>
 					</div>

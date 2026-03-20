@@ -35,7 +35,6 @@ body {
 
 /* Prose styles for markdown content */
 .prose {
-	max-width: 72ch;
 	color: var(--fg);
 }
 
