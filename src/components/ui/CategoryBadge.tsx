@@ -4,8 +4,6 @@ interface CategoryBadgeProps {
 	name: string
 }
 
-const basePath = '/interview-prep-blog'
-
 function slugify(text: string): string {
 	return text
 		.toLowerCase()
@@ -18,7 +16,7 @@ function slugify(text: string): string {
 export default function CategoryBadge({ name }: CategoryBadgeProps) {
 	return (
 		<Link
-			href={`${basePath}/category/${slugify(name)}/`}
+			href={`/category/${slugify(name)}/`}
 			className="inline-block text-xs font-medium px-2.5 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
 		>
 			{name}

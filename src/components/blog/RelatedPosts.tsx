@@ -6,8 +6,6 @@ interface RelatedPostsProps {
 	posts: BlogPost[]
 }
 
-const basePath = '/interview-prep-blog'
-
 export default function RelatedPosts({ posts }: RelatedPostsProps) {
 	if (posts.length === 0) return null
 
@@ -18,7 +16,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 				{posts.map(post => (
 					<Link
 						key={post.slug}
-						href={`${basePath}/blog/${post.slug}/`}
+						href={`/blog/${post.slug}/`}
 						className="block p-4 rounded-lg border border-[var(--border)] hover:border-[var(--fg-muted)] hover:shadow-sm transition-all"
 					>
 						<div className="mb-2">

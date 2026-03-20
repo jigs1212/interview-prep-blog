@@ -5,8 +5,6 @@ import { useState } from 'react'
 import SearchBar from '@/components/search/SearchBar'
 import type { CategoryCount, TagCount } from '@/types/blog'
 
-const basePath = '/interview-prep-blog'
-
 function slugify(text: string): string {
 	return text
 		.toLowerCase()
@@ -27,7 +25,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 	return (
 		<>
 			<header className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)]">
-				<div className="flex items-center justify-between px-4 py-3 sm:px-6 lg:px-10 max-w-4xl mx-auto">
+				<div className="flex items-center justify-between px-6 py-3 sm:px-10 lg:px-16 xl:px-24">
 					<div className="flex items-center gap-3">
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -44,7 +42,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 								</svg>
 							)}
 						</button>
-						<Link href={`${basePath}/`} className="lg:hidden font-semibold text-[var(--fg)]">
+						<Link href="/" className="lg:hidden font-semibold text-[var(--fg)]">
 							Interview Prep Hub
 						</Link>
 					</div>
@@ -75,7 +73,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 
 						<nav>
 							<Link
-								href={`${basePath}/`}
+								href="/"
 								onClick={() => setMobileMenuOpen(false)}
 								className="block px-3 py-2 rounded text-sm mb-1 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
 							>
@@ -90,7 +88,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 									{categories.map(cat => (
 										<Link
 											key={cat.name}
-											href={`${basePath}/category/${slugify(cat.name)}/`}
+											href={`/category/${slugify(cat.name)}/`}
 											onClick={() => setMobileMenuOpen(false)}
 											className="flex items-center justify-between px-3 py-2 rounded text-sm mb-0.5 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
 										>
@@ -110,7 +108,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 										{tags.map(tag => (
 											<Link
 												key={tag.name}
-												href={`${basePath}/tag/${encodeURIComponent(tag.name)}/`}
+												href={`/tag/${encodeURIComponent(tag.name)}/`}
 												onClick={() => setMobileMenuOpen(false)}
 												className="text-xs px-2 py-1 rounded bg-sidebar-hover text-sidebar-text hover:text-sidebar-active transition-colors"
 											>

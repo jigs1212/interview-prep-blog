@@ -4,6 +4,7 @@ import BlogList from '@/components/blog/BlogList'
 import Pagination from '@/components/blog/Pagination'
 
 const basePath = '/interview-prep-blog'
+const paginationBase = '/page'
 
 export function generateStaticParams() {
 	const total = getAllPosts().length
@@ -36,7 +37,7 @@ export default function PaginatedPage({ params }: { params: { number: string } }
 				<p className="text-[var(--fg-muted)]">Page {page} of {totalPages}</p>
 			</div>
 			<BlogList posts={posts} />
-			<Pagination currentPage={page} totalPages={totalPages} basePath={`${basePath}/page`} />
+			<Pagination currentPage={page} totalPages={totalPages} basePath={paginationBase} />
 		</>
 	)
 }

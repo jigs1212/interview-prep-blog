@@ -3,7 +3,7 @@ import BlogList from '@/components/blog/BlogList'
 import Pagination from '@/components/blog/Pagination'
 import type { Metadata } from 'next'
 
-const basePath = '/interview-prep-blog/page'
+const paginationBase = '/page'
 
 export const metadata: Metadata = {
 	title: 'Interview Prep Hub',
@@ -22,7 +22,7 @@ export default function Home() {
 				</p>
 			</div>
 			<BlogList posts={posts} />
-			<Pagination currentPage={1} totalPages={totalPages} basePath={basePath} />
+			<Pagination currentPage={1} totalPages={totalPages} basePath={paginationBase} />
 		</>
 	)
 }
