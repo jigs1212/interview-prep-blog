@@ -19,7 +19,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 	const post = getPostBySlug(params.slug)
 	if (!post) return {}
 
-	const url = `${SITE_URL}/blog/${post.slug}/`
+	const url = `${SITE_URL}/${post.slug}/`
 	const ogImage = `${SITE_URL}/og/${post.slug}.png`
 
 	return {
@@ -116,7 +116,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 				<div className="mt-8 pt-6 border-t border-[var(--border)]">
 					<ShareButtons
 						title={post.title}
-						url={`${SITE_URL}/blog/${post.slug}/`}
+						url={`${SITE_URL}/${post.slug}/`}
 					/>
 				</div>
 

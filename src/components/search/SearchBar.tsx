@@ -5,8 +5,6 @@ import Fuse from 'fuse.js'
 import { useDebounce } from '@/lib/hooks/useDebounce'
 import type { SearchIndexItem } from '@/types/blog'
 
-const basePath = '/interview-prep-blog'
-
 export default function SearchBar() {
 	const [query, setQuery] = useState('')
 	const [results, setResults] = useState<SearchIndexItem[]>([])
@@ -18,7 +16,7 @@ export default function SearchBar() {
 	const debouncedQuery = useDebounce(query, 300)
 
 	useEffect(() => {
-		fetch(`${basePath}/search-index.json`)
+		fetch('/search-index.json')
 			.then(res => res.json())
 			.then((data: SearchIndexItem[]) => {
 				fuseRef.current = new Fuse(data, {
@@ -63,7 +61,7 @@ export default function SearchBar() {
 			setActiveIndex(prev => (prev > 0 ? prev - 1 : results.length - 1))
 		} else if (e.key === 'Enter' && activeIndex >= 0) {
 			e.preventDefault()
-			window.location.href = `${basePath}/blog/${results[activeIndex].slug}/`
+			window.location.href = `/${results[activeIndex].slug}/`
 		} else if (e.key === 'Escape') {
 			setIsOpen(false)
 		}
@@ -113,7 +111,7 @@ export default function SearchBar() {
 							{results.map((item, index) => (
 								<li key={item.slug}>
 									<a
-										href={`${basePath}/blog/${item.slug}/`}
+										href={`/${item.slug}/`}
 										className={`block px-4 py-3 text-sm transition-colors ${
 											index === activeIndex
 												? 'bg-[var(--bg-secondary)]'

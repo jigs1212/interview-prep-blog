@@ -631,7 +631,7 @@ export default function PillarPage() {
 										{catPosts.map(post => (
 											<Link
 												key={post.slug}
-												href={`/blog/${post.slug}/`}
+												href={`/${post.slug}/`}
 												className="block p-4 rounded-lg border border-[var(--border)] hover:border-[var(--fg-muted)] hover:shadow-sm transition-all"
 											>
 												<h4 className="font-medium text-[var(--accent)]">{post.title}</h4>
@@ -691,7 +691,7 @@ export default function PillarPage() {
 						{posts.map(post => (
 							<Link
 								key={post.slug}
-								href={`/blog/${post.slug}/`}
+								href={`/${post.slug}/`}
 								className="flex items-center justify-between p-4 rounded-lg border border-[var(--border)] hover:border-[var(--fg-muted)] hover:shadow-sm transition-all"
 							>
 								<div>

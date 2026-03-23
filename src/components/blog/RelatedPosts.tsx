@@ -16,7 +16,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 				{posts.map(post => (
 					<Link
 						key={post.slug}
-						href={`/blog/${post.slug}/`}
+						href={`/${post.slug}/`}
 						className="block p-4 rounded-lg border border-[var(--border)] hover:border-[var(--fg-muted)] hover:shadow-sm transition-all"
 					>
 						<div className="mb-2">

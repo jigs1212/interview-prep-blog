@@ -1,6 +1,6 @@
 import type { BlogPost, FaqItem } from '@/types/blog'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://int-prep.jigarlodaya.online'
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://blog.jigarlodaya.online'
 export const SITE_NAME = 'Interview Prep Hub'
 export const SITE_DESCRIPTION = 'Deep-dive articles for senior developer interviews'
 
@@ -24,7 +24,7 @@ export function generateArticleJsonLd(post: BlogPost) {
 		},
 		mainEntityOfPage: {
 			'@type': 'WebPage',
-			'@id': `${SITE_URL}/blog/${post.slug}/`,
+			'@id': `${SITE_URL}/${post.slug}/`,
 		},
 		image: `${SITE_URL}/og/${post.slug}.png`,
 		articleSection: post.category,

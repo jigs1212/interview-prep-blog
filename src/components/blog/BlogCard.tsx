@@ -17,7 +17,7 @@ export default function BlogCard({ post }: BlogCardProps) {
 				<ReadingTime minutes={post.readingTime} />
 			</div>
 
-			<Link href={`/blog/${post.slug}/`} className="block">
+			<Link href={`/${post.slug}/`} className="block">
 				<h2 className="text-xl font-semibold mb-2 text-[var(--accent)] group-hover:underline transition-colors">
 					{post.title}
 				</h2>
@@ -34,8 +34,8 @@ export default function BlogCard({ post }: BlogCardProps) {
 
 			{/* Full card click area */}
 			<Link
-				href={`/blog/${post.slug}/`}
-				className="absolute inset-0 z-0"
+			href={`/${post.slug}/`}
+			className="absolute inset-0 z-0"
 				aria-hidden="true"
 				tabIndex={-1}
 			/>

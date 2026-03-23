@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
 
 	const blogEntries: MetadataRoute.Sitemap = posts.map(post => ({
-		url: `${SITE_URL}/blog/${post.slug}/`,
+		url: `${SITE_URL}/${post.slug}/`,
 		lastModified: new Date(post.date),
 		priority: 0.8,
 	}))
