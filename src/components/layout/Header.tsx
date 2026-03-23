@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import SearchBar from '@/components/search/SearchBar'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 import type { CategoryCount, TagCount } from '@/types/blog'
 
 function slugify(text: string): string {
@@ -48,6 +49,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 					</div>
 
 					<SearchBar />
+				<ThemeToggle />
 				</div>
 			</header>
 

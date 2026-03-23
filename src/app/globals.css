@@ -33,6 +33,11 @@ body {
 	line-height: 1.75;
 }
 
+/* Offset anchor scroll targets below the sticky header (~56px) */
+[id] {
+	scroll-margin-top: 4.5rem;
+}
+
 /* Prose styles for markdown content */
 .prose {
 	color: var(--fg);

@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 
+// Temporarily disabled — uncomment the body below to re-enable the PDF lead magnet.
 export default function LeadMagnet() {
+	return null
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function LeadMagnetInner() {
 	const [email, setEmail] = useState('')
 	const [submitted, setSubmitted] = useState(false)
 

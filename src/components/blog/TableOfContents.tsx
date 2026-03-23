@@ -42,7 +42,9 @@ export default function TableOfContents({ toc }: TableOfContentsProps) {
 		e.preventDefault()
 		const el = document.getElementById(id)
 		if (el) {
-			el.scrollIntoView({ behavior: 'smooth' })
+			const headerHeight = (document.querySelector('header') as HTMLElement | null)?.offsetHeight ?? 56
+			const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 8
+			window.scrollTo({ top, behavior: 'smooth' })
 			setActiveId(id)
 			setIsOpen(false)
 		}
