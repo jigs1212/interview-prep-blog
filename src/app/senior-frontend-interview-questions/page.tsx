@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getAllPosts } from '@/lib/posts'
 import { SITE_URL, SITE_NAME, generateWebSiteJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
 import LeadMagnet from '@/components/blog/LeadMagnet'
+import Tag from '@/components/ui/Tag'
 
 const PILLAR_TITLE = 'Senior Frontend Interview Questions — Complete Guide'
 const PILLAR_DESCRIPTION = 'Comprehensive guide to senior frontend developer interview questions covering React, TypeScript, Next.js, accessibility, and system design with code examples.'
@@ -567,18 +568,33 @@ export default function PillarPage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
 			/>
 
-			<div className="max-w-4xl">
-				<header className="mb-12">
-					<h1 className="text-4xl font-bold mb-4">
-						Senior Frontend Interview Questions
-					</h1>
-					<p className="text-lg text-[var(--fg-muted)] mb-6">
-						A comprehensive guide covering every topic senior frontend developers face in interviews — React, TypeScript, Next.js, accessibility, system design, performance, and more. Each section includes the most commonly asked questions with links to deep-dive articles.
-					</p>
-					<p className="text-[var(--fg-muted)]">
-						This guide is structured as a learning path. Start with the fundamentals and work through each topic. Every question listed here has been asked in real senior frontend interviews at top tech companies.
-					</p>
-				</header>
+		<div className="max-w-4xl">
+			<header className="mb-12">
+				<h1 className="text-4xl font-bold mb-4">
+					Senior Frontend Interview Questions
+				</h1>
+				<p className="text-lg text-[var(--fg-muted)] mb-6">
+					A comprehensive guide covering every topic senior frontend developers face in interviews — React, TypeScript, Next.js, accessibility, system design, performance, and more. Each section includes the most commonly asked questions with links to deep-dive articles.
+				</p>
+				<p className="text-[var(--fg-muted)] mb-6">
+					This guide is structured as a learning path. Start with the fundamentals and work through each topic. Every question listed here has been asked in real senior frontend interviews at top tech companies.
+				</p>
+				<div className="flex flex-wrap gap-1.5">
+					{[
+						'react',
+						'typescript',
+						'nextjs',
+						'javascript',
+						'system-design',
+						'css',
+						'performance',
+						'accessibility',
+						'interview-questions',
+					].map(tag => (
+						<Tag key={tag} name={tag} />
+					))}
+				</div>
+			</header>
 
 				{/* Quick navigation */}
 				<nav className="mb-12 p-6 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)]">
