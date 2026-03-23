@@ -38,6 +38,50 @@ body {
 	scroll-margin-top: 4.5rem;
 }
 
+/* ── Custom scrollbars ──────────────────────────────────────── */
+
+/* Webkit — Chrome, Safari, Edge */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--border);
+	border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--fg-muted);
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+/* Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border) transparent;
+}
+
+/* Sidebar always uses a dark background — use slate tones for its thumb */
+.sidebar-scroll::-webkit-scrollbar-thumb {
+	background: #334155;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+	background: #475569;
+}
+
+.sidebar-scroll {
+	scrollbar-color: #334155 transparent;
+}
+
 /* Prose styles for markdown content */
 .prose {
 	color: var(--fg);

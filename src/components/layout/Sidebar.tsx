@@ -30,7 +30,7 @@ export default function Sidebar({ categories, tags }: SidebarProps) {
 	const currentPath = isMounted ? pathname ?? '' : ''
 
 	return (
-		<aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-[260px] bg-sidebar text-sidebar-text overflow-y-auto">
+		<aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-[260px] bg-sidebar text-sidebar-text overflow-y-auto sidebar-scroll">
 			<div className="p-6">
 				<Link href="/" className="block mb-8">
 					<h1 className="text-xl font-bold text-white">Interview Prep Hub</h1>

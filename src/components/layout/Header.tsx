@@ -60,7 +60,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 						className="absolute inset-0 bg-black/50"
 						onClick={() => setMobileMenuOpen(false)}
 					/>
-					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-sidebar text-sidebar-text overflow-y-auto p-6">
+					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-sidebar text-sidebar-text overflow-y-auto sidebar-scroll p-6">
 						<div className="flex items-center justify-between mb-8">
 							<h2 className="text-lg font-bold text-white">Interview Prep Hub</h2>
 							<button
