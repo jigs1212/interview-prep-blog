@@ -1,14 +1,13 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/posts'
+import { SITE_URL, SITE_NAME, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
 import TableOfContents from '@/components/blog/TableOfContents'
 import ShareButtons from '@/components/blog/ShareButtons'
 import RelatedPosts from '@/components/blog/RelatedPosts'
 import ReadingTime from '@/components/blog/ReadingTime'
 import CategoryBadge from '@/components/ui/CategoryBadge'
 import Tag from '@/components/ui/Tag'
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.github.io/interview-prep-blog'
 
 export function generateStaticParams() {
 	return getAllPosts().map(post => ({ slug: post.slug }))
@@ -18,8 +17,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 	const post = getPostBySlug(params.slug)
 	if (!post) return {}
 
-	const url = `${siteUrl}/blog/${post.slug}/`
-	const ogImage = `${siteUrl}/og/${post.slug}.png`
+	const url = `${SITE_URL}/blog/${post.slug}/`
+	const ogImage = `${SITE_URL}/og/${post.slug}.png`
 
 	return {
 		title: post.title,
@@ -30,6 +29,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 			description: post.description,
 			url,
 			type: 'article',
+			publishedTime: post.date,
+			modifiedTime: post.date,
+			section: post.category,
+			tags: post.tags,
+			siteName: SITE_NAME,
 			images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
 		},
 		twitter: {
@@ -46,8 +50,23 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 	if (!post) notFound()
 
 	const related = getRelatedPosts(post.related)
+	const articleJsonLd = generateArticleJsonLd(post)
+	const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+		{ name: 'Home', url: SITE_URL },
+		{ name: post.category, url: `${SITE_URL}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/` },
+		{ name: post.title },
+	])
 
 	return (
+		<>
+		<script
+			type="application/ld+json"
+			dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+		/>
+		<script
+			type="application/ld+json"
+			dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+		/>
 		<div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10">
 			{/* Left column — TOC */}
 			<aside className="hidden lg:block">
@@ -87,12 +106,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 				<div className="mt-8 pt-6 border-t border-[var(--border)]">
 					<ShareButtons
 						title={post.title}
-						url={`${siteUrl}/blog/${post.slug}/`}
+						url={`${SITE_URL}/blog/${post.slug}/`}
 					/>
 				</div>
 
 				<RelatedPosts posts={related} />
 			</article>
 		</div>
+		</>
 	)
 }

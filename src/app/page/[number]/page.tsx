@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { getAllPosts, getPaginatedPosts, POSTS_PER_PAGE } from '@/lib/posts'
+import { SITE_URL } from '@/lib/seo'
 import BlogList from '@/components/blog/BlogList'
 import Pagination from '@/components/blog/Pagination'
 
-const basePath = '/interview-prep-blog'
 const paginationBase = '/page'
 
 export function generateStaticParams() {
@@ -15,16 +15,20 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: { params: { number: string } }) {
-	const { totalPages } = getPaginatedPosts(parseInt(params.number))
+	const page = parseInt(params.number)
+	const { totalPages } = getPaginatedPosts(page)
+	const url = `${SITE_URL}/page/${page}/`
 	return {
-		title: `Page ${params.number} of ${totalPages} — Interview Prep Hub`,
-		description: `Blog posts — page ${params.number} of ${totalPages}`,
+		title: `Page ${page} of ${totalPages}`,
+		description: `Senior developer interview prep articles — page ${page} of ${totalPages}.`,
+		alternates: { canonical: url },
+		robots: { index: false, follow: true },
 	}
 }
 
 export default function PaginatedPage({ params }: { params: { number: string } }) {
 	if (params.number === '1') {
-		redirect(`${basePath}/`)
+		redirect('/')
 	}
 
 	const page = parseInt(params.number)

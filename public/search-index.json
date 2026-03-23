@@ -1,5 +1,20 @@
 [
   {
+    "slug": "web-accessibility-deep-dive",
+    "title": "Web Accessibility (A11y) Deep Dive",
+    "description": "Comprehensive guide to web accessibility for senior frontend interviews — WCAG, ARIA, semantic HTML, keyboard navigation, and testing",
+    "tags": [
+      "accessibility",
+      "a11y",
+      "aria",
+      "wcag",
+      "semantic-html",
+      "keyboard-navigation"
+    ],
+    "category": "Web Fundamentals",
+    "date": "2026-03-23"
+  },
+  {
     "slug": "react-hooks-deep-dive",
     "title": "React Hooks Deep Dive",
     "description": "Complete guide to React hooks for senior interviews",

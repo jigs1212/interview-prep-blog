@@ -1,4 +1,5 @@
 import { getAllTags, getPostsByTag } from '@/lib/posts'
+import { SITE_URL } from '@/lib/seo'
 import BlogList from '@/components/blog/BlogList'
 import type { Metadata } from 'next'
 
@@ -8,9 +9,12 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { tag: string } }): Metadata {
 	const tag = decodeURIComponent(params.tag)
+	const url = `${SITE_URL}/tag/${encodeURIComponent(tag)}/`
 	return {
-		title: `#${tag} Articles — Interview Prep Hub`,
-		description: `All posts tagged with ${tag}`,
+		title: `${tag} — Interview Prep Articles`,
+		description: `Interview preparation articles tagged with "${tag}" — covering concepts, code examples, and common interview questions.`,
+		alternates: { canonical: url },
+		openGraph: { url },
 	}
 }
 

@@ -1,5 +1,6 @@
 import { getAllCategories, getPostsByCategory } from '@/lib/posts'
 import { slugify } from '@/lib/utils'
+import { SITE_URL } from '@/lib/seo'
 import BlogList from '@/components/blog/BlogList'
 import type { Metadata } from 'next'
 
@@ -9,9 +10,12 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { name: string } }): Metadata {
 	const category = findCategoryBySlug(params.name)
+	const url = `${SITE_URL}/category/${params.name}/`
 	return {
-		title: `${category} Interview Prep Articles — Interview Prep Hub`,
-		description: `All posts in the ${category} category`,
+		title: `${category} Interview Questions & Answers`,
+		description: `Senior developer interview preparation articles covering ${category} concepts, patterns, and best practices.`,
+		alternates: { canonical: url },
+		openGraph: { url },
 	}
 }
 

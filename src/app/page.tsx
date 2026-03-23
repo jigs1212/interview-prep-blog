@@ -1,4 +1,5 @@
 import { getPaginatedPosts } from '@/lib/posts'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, generateWebSiteJsonLd } from '@/lib/seo'
 import BlogList from '@/components/blog/BlogList'
 import Pagination from '@/components/blog/Pagination'
 import type { Metadata } from 'next'
@@ -6,19 +7,25 @@ import type { Metadata } from 'next'
 const paginationBase = '/page'
 
 export const metadata: Metadata = {
-	title: 'Interview Prep Hub',
-	description: 'Deep-dive articles for senior developer interviews',
+	title: SITE_NAME,
+	description: SITE_DESCRIPTION,
+	alternates: { canonical: `${SITE_URL}/` },
 }
 
 export default function Home() {
 	const { posts, totalPages } = getPaginatedPosts(1)
+	const websiteJsonLd = generateWebSiteJsonLd()
 
 	return (
 		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+			/>
 			<div className="mb-8">
 				<h1 className="text-3xl font-bold mb-2">All Posts</h1>
 				<p className="text-[var(--fg-muted)]">
-					Deep-dive articles for senior developer interviews
+					{SITE_DESCRIPTION}
 				</p>
 			</div>
 			<BlogList posts={posts} />

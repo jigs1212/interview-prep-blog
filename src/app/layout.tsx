@@ -1,19 +1,25 @@
 import type { Metadata } from 'next'
 import { getAllCategories, getAllTags } from '@/lib/posts'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/seo'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
+	metadataBase: new URL(SITE_URL),
 	title: {
-		default: 'Interview Prep Hub',
-		template: '%s | Interview Prep Hub',
+		default: SITE_NAME,
+		template: `%s | ${SITE_NAME}`,
 	},
-	description: 'Deep-dive articles for senior developer interviews',
+	description: SITE_DESCRIPTION,
 	openGraph: {
 		type: 'website',
 		locale: 'en_US',
-		siteName: 'Interview Prep Hub',
+		siteName: SITE_NAME,
+		url: SITE_URL,
+	},
+	alternates: {
+		canonical: SITE_URL,
 	},
 }
 
