@@ -9,6 +9,7 @@ const paginationBase = '/page'
 export const metadata: Metadata = {
 	title: SITE_NAME,
 	description: SITE_DESCRIPTION,
+	keywords: ['senior frontend interview questions', 'react interview questions', 'typescript interview questions', 'nextjs interview questions', 'frontend developer interview prep'],
 	alternates: { canonical: `${SITE_URL}/` },
 }
 

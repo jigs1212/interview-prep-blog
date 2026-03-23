@@ -1,4 +1,4 @@
-import type { TocItem } from '@/types/blog'
+import type { TocItem, FaqItem } from '@/types/blog'
 
 function slugify(text: string): string {
 	return text
@@ -37,6 +37,27 @@ export function extractToc(htmlContent: string): TocItem[] {
 	}
 
 	return items
+}
+
+export function extractFaqs(htmlContent: string): FaqItem[] {
+	const faqs: FaqItem[] = []
+	const faqRegex = /<h[23][^>]*>(.*?\?)<\/h[23]>([\s\S]*?)(?=<h[23][^>]*>|$)/gi
+	let match: RegExpExecArray | null
+
+	while ((match = faqRegex.exec(htmlContent)) !== null) {
+		const question = match[1].replace(/<[^>]*>/g, '').trim()
+		const answerHtml = match[2].trim()
+		const answer = answerHtml
+			.replace(/<[^>]*>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim()
+
+		if (question && answer) {
+			faqs.push({ question, answer: answer.slice(0, 500) })
+		}
+	}
+
+	return faqs
 }
 
 export function generateTocHtml(toc: TocItem[]): string {

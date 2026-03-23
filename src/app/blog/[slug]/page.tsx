@@ -1,13 +1,15 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/posts'
-import { SITE_URL, SITE_NAME, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo'
+import { SITE_URL, SITE_NAME, generateArticleJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from '@/lib/seo'
 import TableOfContents from '@/components/blog/TableOfContents'
 import ShareButtons from '@/components/blog/ShareButtons'
 import RelatedPosts from '@/components/blog/RelatedPosts'
 import ReadingTime from '@/components/blog/ReadingTime'
 import CategoryBadge from '@/components/ui/CategoryBadge'
 import Tag from '@/components/ui/Tag'
+import PillarPageLink from '@/components/blog/PillarPageLink'
+import LeadMagnet from '@/components/blog/LeadMagnet'
 
 export function generateStaticParams() {
 	return getAllPosts().map(post => ({ slug: post.slug }))
@@ -23,6 +25,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 	return {
 		title: post.title,
 		description: post.description,
+		keywords: [...post.tags, post.category.toLowerCase(), 'interview questions', 'senior developer'],
 		alternates: { canonical: url },
 		openGraph: {
 			title: post.title,
@@ -56,6 +59,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 		{ name: post.category, url: `${SITE_URL}/category/${post.category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}/` },
 		{ name: post.title },
 	])
+	const faqJsonLd = generateFaqJsonLd(post.faqs)
 
 	return (
 		<>
@@ -67,6 +71,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 			type="application/ld+json"
 			dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
 		/>
+		{faqJsonLd && (
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+			/>
+		)}
 		<div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10">
 			{/* Left column — TOC */}
 			<aside className="hidden lg:block">
@@ -110,6 +120,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 					/>
 				</div>
 
+				<PillarPageLink />
+				<LeadMagnet />
 				<RelatedPosts posts={related} />
 			</article>
 		</div>

@@ -17,6 +17,7 @@ export interface BlogPost {
 	content: string
 	readingTime: string
 	toc: TocItem[]
+	faqs: FaqItem[]
 }
 
 export interface SearchIndexItem {
@@ -26,6 +27,11 @@ export interface SearchIndexItem {
 	tags: string[]
 	category: string
 	date: string
+}
+
+export interface FaqItem {
+	question: string
+	answer: string
 }
 
 export interface PaginatedResult {

@@ -5,7 +5,7 @@ import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkHtml from 'remark-html'
 import readingTime from 'reading-time'
-import { addHeadingIds, extractToc } from './toc'
+import { addHeadingIds, extractToc, extractFaqs } from './toc'
 import type { BlogPost, PaginatedResult, CategoryCount, TagCount } from '@/types/blog'
 
 export const POSTS_PER_PAGE = 10
@@ -34,6 +34,7 @@ export function getAllPosts(): BlogPost[] {
 		const html = addHeadingIds(parseMarkdown(content))
 		const stats = readingTime(content)
 		const toc = extractToc(html)
+		const faqs = extractFaqs(html)
 
 		return {
 			slug: data.slug as string,
@@ -47,6 +48,7 @@ export function getAllPosts(): BlogPost[] {
 			content: html,
 			readingTime: stats.text,
 			toc,
+			faqs,
 		}
 	})
 

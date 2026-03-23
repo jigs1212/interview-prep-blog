@@ -6,7 +6,7 @@ category: "React"
 subcategory: "Hooks"
 tags: ["react", "hooks", "useState", "useEffect"]
 date: "2026-03-20"
-related: ["useEffect-patterns", "custom-hooks-guide"]
+related: ["useEffect-patterns", "custom-hooks-guide", "javascript-interview-questions"]
 ---
 
 ## Introduction to React Hooks

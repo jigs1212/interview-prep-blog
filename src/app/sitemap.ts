@@ -35,6 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 	return [
 		{ url: `${SITE_URL}/`, priority: 1.0 },
+		{ url: `${SITE_URL}/senior-frontend-interview-questions/`, priority: 1.0, changeFrequency: 'weekly' },
 		...blogEntries,
 		...categoryEntries,
 		...tagEntries,

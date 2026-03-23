@@ -1,4 +1,4 @@
-import type { BlogPost } from '@/types/blog'
+import type { BlogPost, FaqItem } from '@/types/blog'
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://int-prep.jigarlodaya.online'
 export const SITE_NAME = 'Interview Prep Hub'
@@ -39,6 +39,22 @@ export function generateWebSiteJsonLd() {
 		name: SITE_NAME,
 		description: SITE_DESCRIPTION,
 		url: SITE_URL,
+	}
+}
+
+export function generateFaqJsonLd(faqs: FaqItem[]) {
+	if (faqs.length === 0) return null
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: faqs.map(faq => ({
+			'@type': 'Question',
+			name: faq.question,
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: faq.answer,
+			},
+		})),
 	}
 }
 

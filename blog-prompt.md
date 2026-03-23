@@ -34,7 +34,7 @@ related: [{{RELATED_POST_SLUGS_OR_EMPTY}}]
 1. Start with an `## Introduction` section that explains what the topic is, why it matters for senior interviews, and sets context.
 2. Use `##` (h2) for major sections and `###` (h3) for subsections — these become the Table of Contents.
 3. Aim for 5-8 major sections covering the topic comprehensively.
-4. Target 800-1500 words total.
+4. Target 1500-2500 words total.
 5. Include code examples using fenced code blocks with language tags (```tsx, ```typescript, ```javascript, etc.).
 6. Write in a direct, technical tone — no fluff. Assume the reader knows programming basics.
 7. For each concept, explain:
@@ -42,6 +42,41 @@ related: [{{RELATED_POST_SLUGS_OR_EMPTY}}]
    - Why it matters in interviews
    - Common pitfalls or misconceptions interviewers test
 8. End with a section on best practices or advanced patterns.
+
+### Content structure
+
+Organize the post into these difficulty tiers where applicable:
+
+1. **Beginner concepts** — Foundational knowledge expected at any level
+2. **Intermediate patterns** — Applied usage and common patterns
+3. **Advanced techniques** — Deep internals, edge cases, performance implications
+4. **Scenario-based questions** — "How would you..." or "What happens when..." style questions that test real-world thinking
+5. **Rapid fire** — Short Q&A pairs that are commonly asked in quick-fire interview rounds
+
+### FAQ section
+
+End the post with a `## Frequently Asked Questions` section containing 3-5 questions in this format:
+
+```markdown
+## Frequently Asked Questions
+
+### What is the difference between X and Y?
+
+Answer here...
+
+### When should you use X over Y?
+
+Answer here...
+```
+
+These h3 headings MUST end with a question mark (`?`) — the site automatically extracts them into FAQ JSON-LD structured data for Google rich results.
+
+### Internal linking
+
+Include a sentence in the introduction or conclusion that references the pillar page:
+"For a complete overview of senior frontend interview topics, see our [Senior Frontend Interview Questions guide](/senior-frontend-interview-questions/)."
+
+Use the `related` field to link to 2-3 existing articles. Reference related topics naturally in the content body to build topical authority.
 
 ### Key topics to cover
 

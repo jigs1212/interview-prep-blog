@@ -14,6 +14,7 @@ export function generateMetadata({ params }: { params: { name: string } }): Meta
 	return {
 		title: `${category} Interview Questions & Answers`,
 		description: `Senior developer interview preparation articles covering ${category} concepts, patterns, and best practices.`,
+		keywords: [category.toLowerCase(), 'interview questions', 'senior developer', 'frontend interview prep'],
 		alternates: { canonical: url },
 		openGraph: { url },
 	}

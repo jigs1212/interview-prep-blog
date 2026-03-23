@@ -1,5 +1,50 @@
 [
   {
+    "slug": "css-layout-interview-questions",
+    "title": "CSS & Layout Interview Questions for Senior Developers",
+    "description": "CSS interview prep for senior developers — Flexbox, Grid, specificity, custom properties, responsive design, and CSS architecture patterns.",
+    "tags": [
+      "css",
+      "flexbox",
+      "css-grid",
+      "responsive-design",
+      "layout",
+      "interview-questions"
+    ],
+    "category": "CSS",
+    "date": "2026-03-23"
+  },
+  {
+    "slug": "frontend-system-design-questions",
+    "title": "Frontend System Design Interview Questions",
+    "description": "Senior frontend system design interview prep — component libraries, real-time features, micro-frontends, and scalable architecture patterns.",
+    "tags": [
+      "system-design",
+      "architecture",
+      "component-library",
+      "micro-frontends",
+      "state-management",
+      "interview-questions"
+    ],
+    "category": "System Design",
+    "date": "2026-03-23"
+  },
+  {
+    "slug": "javascript-interview-questions",
+    "title": "JavaScript Interview Questions for Senior Developers",
+    "description": "Master JavaScript fundamentals for senior interviews — event loop, closures, prototypes, promises, and advanced patterns with code examples.",
+    "tags": [
+      "javascript",
+      "event-loop",
+      "closures",
+      "promises",
+      "prototypes",
+      "interview-questions"
+    ],
+    "category": "JavaScript",
+    "date": "2026-03-23"
+  },
+  {
     "slug": "web-accessibility-deep-dive",
     "title": "Web Accessibility (A11y) Deep Dive",
     "description": "Comprehensive guide to web accessibility for senior frontend interviews — WCAG, ARIA, semantic HTML, keyboard navigation, and testing",
@@ -12,6 +57,21 @@
       "keyboard-navigation"
     ],
     "category": "Web Fundamentals",
+    "date": "2026-03-23"
+  },
+  {
+    "slug": "web-performance-interview-questions",
+    "title": "Web Performance Interview Questions for Senior Developers",
+    "description": "Senior web performance interview prep — Core Web Vitals, code splitting, tree shaking, rendering optimization, and profiling techniques.",
+    "tags": [
+      "performance",
+      "core-web-vitals",
+      "code-splitting",
+      "lazy-loading",
+      "optimization",
+      "interview-questions"
+    ],
+    "category": "Performance",
     "date": "2026-03-23"
   },
   {

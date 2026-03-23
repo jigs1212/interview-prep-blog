@@ -6,7 +6,7 @@ category: "Web Fundamentals"
 subcategory: "Accessibility"
 tags: ["accessibility", "a11y", "aria", "wcag", "semantic-html", "keyboard-navigation"]
 date: "2026-03-23"
-related: []
+related: ["css-layout-interview-questions"]
 ---
 
 ## Introduction

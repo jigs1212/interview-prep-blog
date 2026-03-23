@@ -6,7 +6,7 @@ category: "Next.js"
 subcategory: "Routing"
 tags: ["nextjs", "app-router", "server-components", "routing"]
 date: "2026-03-19"
-related: ["react-hooks-deep-dive", "typescript-generics-masterclass"]
+related: ["react-hooks-deep-dive", "typescript-generics-masterclass", "web-performance-interview-questions"]
 ---
 
 ## Understanding the App Router
