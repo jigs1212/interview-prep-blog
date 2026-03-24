@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 }
 
 // Inline script runs before React hydrates to avoid flash of wrong theme.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})();`
+const themeScript = `(function(){try{var d=document.documentElement;var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}d.classList.toggle('dark',t==='dark');d.setAttribute('data-theme',t);var c=localStorage.getItem('contrast')||'normal';d.setAttribute('data-contrast',c)}catch(e){}})();`
 
 export default function RootLayout({
 	children,
@@ -38,6 +38,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
+				<link rel="stylesheet" href="/oat.min.css" />
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
 			</head>
 			<body className="antialiased bg-[var(--bg)] text-[var(--fg)]">

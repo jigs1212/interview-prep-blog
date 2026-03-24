@@ -14,6 +14,7 @@
     "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
+    "@knadh/oat": "^0.5.0",
     "date-fns": "^4.1.0",
     "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",

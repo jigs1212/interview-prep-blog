@@ -2,28 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--bg: #ffffff;
-	--bg-secondary: #f8fafc;
-	--fg: #0f172a;
-	--fg-muted: #64748b;
-	--border: #e2e8f0;
-	--accent: #2563eb;
-	--accent-hover: #1d4ed8;
-	--code-bg: #1e1e1e;
-	--code-fg: #d4d4d4;
+:root,
+[data-theme="dark"] {
+	--bg: #0d1117;
+	--bg-secondary: #161b22;
+	--fg: #e6edf3;
+	--fg-muted: #8b949e;
+	--border: #30363d;
+	--accent: #30ff90;
+	--accent-hover: #5cffab;
+	--accent-muted: rgba(48, 255, 144, 0.08);
+	--accent-border: rgba(48, 255, 144, 0.2);
+	--accent-glow: rgba(48, 255, 144, 0.3);
+	--code-bg: #0d1117;
+	--code-fg: #e6edf3;
 }
 
-.dark {
-	--bg: #0f172a;
-	--bg-secondary: #1e293b;
-	--fg: #e2e8f0;
-	--fg-muted: #94a3b8;
-	--border: #334155;
-	--accent: #60a5fa;
-	--accent-hover: #93bbfd;
-	--code-bg: #0d1117;
-	--code-fg: #d4d4d4;
+[data-theme="light"] {
+	--bg: #f5f0e8;
+	--bg-secondary: #ebe5d6;
+	--fg: #1c1917;
+	--fg-muted: #57534e;
+	--border: #d6d0c4;
+	--accent: #1a6b3c;
+	--accent-hover: #15573a;
+	--accent-muted: rgba(26, 107, 60, 0.08);
+	--accent-border: rgba(26, 107, 60, 0.2);
+	--accent-glow: rgba(26, 107, 60, 0.15);
+	--code-bg: #1c1917;
+	--code-fg: #f5f0e8;
+}
+
+[data-contrast="high"] {
+	--border: #e6edf3;
+	--fg-muted: #c9d1d9;
+	--accent: #3fff9a;
+	--accent-hover: #6fffb8;
+	--accent-muted: rgba(63, 255, 154, 0.15);
+	--accent-border: rgba(63, 255, 154, 0.35);
+	--accent-glow: rgba(63, 255, 154, 0.4);
+	--code-bg: #000000;
+	--code-fg: #ffffff;
+}
+
+[data-theme="light"][data-contrast="high"] {
+	--border: #1c1917;
+	--fg-muted: #292524;
+	--accent: #15573a;
+	--accent-hover: #0d3d28;
+	--accent-muted: rgba(21, 87, 58, 0.15);
+	--accent-border: rgba(21, 87, 58, 0.35);
+	--accent-glow: rgba(21, 87, 58, 0.25);
+	--code-bg: #0c0a09;
+	--code-fg: #fafaf9;
 }
 
 body {
@@ -69,17 +100,19 @@ body {
 	scrollbar-color: var(--border) transparent;
 }
 
-/* Sidebar always uses a dark background — use slate tones for its thumb */
-.sidebar-scroll::-webkit-scrollbar-thumb {
-	background: #334155;
+/* Sidebar scrollbar uses CSS variables */
+.sidebar-scroll::-webkit-scrollbar-track {
+	background: var(--bg);
 }
-
+.sidebar-scroll::-webkit-scrollbar-thumb {
+	background-color: var(--border);
+}
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-	background: #475569;
+	background-color: var(--accent);
 }
 
 .sidebar-scroll {
-	scrollbar-color: #334155 transparent;
+	scrollbar-color: var(--border) var(--bg);
 }
 
 /* Prose styles for markdown content */
