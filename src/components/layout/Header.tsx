@@ -4,16 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import SearchBar from '@/components/search/SearchBar'
 import ThemeToggle from '@/components/ui/ThemeToggle'
+import { slugify } from '@/lib/utils'
 import type { CategoryCount, TagCount } from '@/types/blog'
-
-function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.replace(/[^a-z0-9\s-]/g, '')
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-')
-		.trim()
-}
 
 interface HeaderProps {
 	categories?: CategoryCount[]
@@ -44,12 +36,14 @@ export default function Header({ categories, tags }: HeaderProps) {
 							)}
 						</button>
 						<Link href="/" className="lg:hidden font-semibold text-[var(--fg)]">
-							Interview Prep Hub
+							<span className="text-[var(--accent)] font-mono">[</span>
+							Interview Hub
+							<span className="text-[var(--accent)] font-mono">]</span>
 						</Link>
 					</div>
 
 					<SearchBar />
-				<ThemeToggle />
+					<ThemeToggle />
 				</div>
 			</header>
 
@@ -60,79 +54,87 @@ export default function Header({ categories, tags }: HeaderProps) {
 						className="absolute inset-0 bg-black/50"
 						onClick={() => setMobileMenuOpen(false)}
 					/>
-					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-sidebar text-sidebar-text overflow-y-auto sidebar-scroll p-6">
-						<div className="flex items-center justify-between mb-8">
-							<h2 className="text-lg font-bold text-white">Interview Prep Hub</h2>
-							<button
-								onClick={() => setMobileMenuOpen(false)}
-								className="p-1 rounded text-sidebar-text hover:text-white"
-							>
-								<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-									<path d="M6 18L18 6M6 6l12 12" />
-								</svg>
-							</button>
+					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-[var(--bg)] overflow-y-auto sidebar-scroll border-r border-[var(--border)]">
+						{/* Header */}
+						<div className="px-5 pt-6 pb-4 border-b border-[var(--border)]">
+							<div className="flex items-center justify-between">
+								<div>
+									<h2 className="text-[var(--fg)] text-base font-bold">
+										<span className="text-[var(--accent)] font-mono">[</span>
+										Interview Hub
+										<span className="text-[var(--accent)] font-mono">]</span>
+									</h2>
+									<p className="text-xs font-mono text-[var(--accent)] mt-1">
+										$ preparing --level senior
+									</p>
+								</div>
+								<button
+									onClick={() => setMobileMenuOpen(false)}
+									className="p-1 rounded text-[var(--fg-muted)] hover:text-[var(--fg)]"
+								>
+									<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+										<path d="M6 18L18 6M6 6l12 12" />
+									</svg>
+								</button>
+							</div>
 						</div>
 
-						<nav>
+						<nav className="flex-1 px-3 py-4 space-y-1">
 							<Link
 								href="/"
 								onClick={() => setMobileMenuOpen(false)}
-								className="block px-3 py-2 rounded text-sm mb-1 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
+								className="flex items-center px-3 py-2 rounded-md text-sm text-[var(--fg-muted)] hover:bg-[var(--bg-secondary)] hover:text-[var(--fg)] border-l-[3px] border-transparent transition-colors"
 							>
 								All Posts
 							</Link>
-
-							<div className="mt-6 mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-sidebar-text/60">
-								Guides
-							</div>
 							<Link
-								href="/senior-frontend-interview-questions/"
+								href="/senior-interview-guide"
 								onClick={() => setMobileMenuOpen(false)}
-								className="flex items-center gap-2 px-3 py-2 rounded text-sm mb-1 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
+								className="flex items-center px-3 py-2 rounded-md text-sm text-[var(--fg-muted)] hover:bg-[var(--bg-secondary)] hover:text-[var(--fg)] border-l-[3px] border-transparent transition-colors"
 							>
-								<svg className="w-3.5 h-3.5 shrink-0 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-									<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-								</svg>
+								<span className="text-yellow-400 mr-2">&#9733;</span>
 								Senior Interview Guide
 							</Link>
 
 							{categories && categories.length > 0 && (
-								<>
-									<div className="mt-6 mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-sidebar-text/60">
-										Categories
+								<div className="pt-4">
+									<div className="inline-block px-2 py-1 mb-2 bg-[var(--bg-secondary)] rounded">
+										<span className="text-[10px] font-mono text-[var(--accent)] tracking-wider">{'// CATEGORIES'}</span>
 									</div>
-									{categories.map(cat => (
+									{categories.map(({ name, count }) => (
 										<Link
-											key={cat.name}
-											href={`/category/${slugify(cat.name)}/`}
+											key={name}
+											href={`/category/${slugify(name)}`}
 											onClick={() => setMobileMenuOpen(false)}
-											className="flex items-center justify-between px-3 py-2 rounded text-sm mb-0.5 hover:bg-sidebar-hover hover:text-sidebar-active transition-colors"
+											className="flex items-center justify-between px-3 py-1.5 rounded text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
 										>
-											<span>{cat.name}</span>
-											<span className="text-xs bg-sidebar-hover rounded-full px-2 py-0.5">{cat.count}</span>
+											<span>{name}</span>
+											<span className="font-mono text-xs text-[var(--accent)]">
+												{String(count).padStart(2, '0')}
+											</span>
 										</Link>
 									))}
-								</>
+								</div>
 							)}
 
 							{tags && tags.length > 0 && (
-								<>
-									<div className="mt-6 mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-sidebar-text/60">
-										Tags
+								<div className="pt-4">
+									<div className="inline-block px-2 py-1 mb-2 bg-[var(--bg-secondary)] rounded">
+										<span className="text-[10px] font-mono text-[var(--accent)] tracking-wider">{'// TAGS'}</span>
 									</div>
-									<div className="flex flex-wrap gap-1.5 px-3">
-										{tags.map(tag => (
+									<div className="flex flex-wrap gap-1.5 px-1">
+										{tags.slice(0, 15).map(({ name }) => (
 											<Link
-												key={tag.name}
-												href={`/tag/${encodeURIComponent(tag.name)}/`}
+												key={name}
+												href={`/tag/${slugify(name)}`}
 												onClick={() => setMobileMenuOpen(false)}
-												className="text-xs px-2 py-1 rounded bg-sidebar-hover text-sidebar-text hover:text-sidebar-active transition-colors"
+												className="inline-block px-2.5 py-0.5 text-[11px] font-mono rounded border border-[var(--border)] text-[var(--fg-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
 											>
-												{tag.name}
+												{name}
 											</Link>
 										))}
 									</div>
-								</>
+								</div>
 							)}
 						</nav>
 					</aside>
