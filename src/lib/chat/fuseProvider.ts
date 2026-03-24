@@ -18,6 +18,7 @@ export class FuseProvider implements ChatProvider {
 		})
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async getAnswer(question: string, _history?: ChatMessage[]): Promise<ChatResponse> {
 		if (!this.fuse || this.sections.length === 0) {
 			return {
