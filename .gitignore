@@ -39,3 +39,5 @@ next-env.d.ts
 public/og/*.png
 public/search-index.json
 public/article-sections/
+
+session.txt
