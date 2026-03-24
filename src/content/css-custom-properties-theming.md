@@ -300,7 +300,7 @@ Register a property with `@property` when you need to animate it with CSS transi
 
 ### How do you handle theming in a component library that is consumed by applications with different themes?
 
-Design the library to consume CSS custom properties with sensible fallbacks rather than hardcoding colours. Document the expected token names your components rely on. The consuming application defines those tokens in its own stylesheet. This is the approach the Oat library uses — it defines the tokens, and every component in the application references them, allowing the library to remain theme-agnostic.
+Design the library to consume CSS custom properties with sensible fallbacks rather than hardcoding colours. Document the expected token names your components rely on. The consuming application defines those tokens in its own stylesheet. This is the approach used in this blog — the design tokens are defined in `globals.css`, and every component references them via `var()`, keeping the visual layer completely decoupled from the component logic.
 
 ### Does using CSS custom properties impact performance?
 

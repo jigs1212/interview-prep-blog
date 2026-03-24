@@ -13,7 +13,7 @@ export default function BlogCard({ post }: BlogCardProps) {
 		<article className="group relative border border-[var(--border)] bg-[var(--bg-secondary)] rounded-lg p-6 hover:border-[var(--accent-border)] hover:shadow-[0_0_20px_var(--accent-glow)] transition-all">
 			<div className="flex items-center gap-3 mb-3 relative z-10">
 				<CategoryBadge name={post.category} />
-				<span className="text-sm text-[var(--fg-muted)]">{post.date}</span>
+				<span className="text-sm font-mono text-[var(--fg-muted)]">{post.date}</span>
 				<ReadingTime minutes={post.readingTime} />
 			</div>
 

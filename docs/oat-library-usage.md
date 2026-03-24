@@ -1,14 +1,14 @@
-# Oat CSS Library — Usage Reference
+# Design Tokens — Usage Reference
 
-This document maps every CSS custom property provided by the Oat library to the components that consume it in this project. The Oat library is a **design-token system**, not a component library. It exposes CSS custom properties and two HTML attribute hooks (`data-theme`, `data-contrast`) that drive the entire light/dark/high-contrast theme.
+This document maps every CSS custom property (design token) to the components that consume it in this project. The theming system is a **custom CSS variable architecture** using `data-theme` and `data-contrast` HTML attributes on `<html>`, with Tailwind CSS for layout utilities.
 
 ---
 
-## How the Library Works
+## How the Theme System Works
 
-Oat does **not** ship pre-built component classes. It provides:
+The system provides:
 
-1. **CSS custom properties (design tokens)** — declared under `:root`, `[data-theme]`, and `[data-contrast]` selectors.
+1. **CSS custom properties (design tokens)** — declared under `:root`, `[data-theme]`, and `[data-contrast]` selectors in `src/app/globals.css`.
 2. **`data-theme` attribute** — set on `<html>`. Accepted values: `"dark"` (default) | `"light"`.
 3. **`data-contrast` attribute** — set on `<html>`. Accepted values: `"normal"` (default) | `"high"`.
 4. **Combined selector** — `[data-theme="light"][data-contrast="high"]` for maximum-contrast light mode overrides.
@@ -166,7 +166,7 @@ body {
 <body className="antialiased bg-[var(--bg)] text-[var(--fg)]">
 ```
 
-The inline script (shown in the "How the Library Works" section above) also sets `data-theme` and `data-contrast` on `<html>` before React mounts.
+The inline script (shown in the "How the Theme System Works" section above) also sets `data-theme` and `data-contrast` on `<html>` before React mounts.
 
 ---
 
@@ -364,7 +364,7 @@ const toggleContrast = () => {
                     transition-all">
 
   {/* Date / meta in muted text */}
-  <span className="text-sm text-[var(--fg-muted)]">{post.date}</span>
+  <span className="text-sm font-mono text-[var(--fg-muted)]">{post.date}</span>
 
   {/* Title — accent colour, underline on group hover */}
   <h2 className="text-xl font-semibold text-[var(--accent)] group-hover:underline">
@@ -419,7 +419,7 @@ const toggleContrast = () => {
     </a>
 
     {/* Inactive item — muted, border on hover */}
-    <a className="block pl-4 py--1 border-l-2 -ml-px
+    <a className="block pl-4 py-1 border-l-2 -ml-px
                   border-transparent text-[var(--fg-muted)]
                   hover:text-[var(--fg)] hover:border-[var(--border)]">
       useState: Managing State
@@ -510,7 +510,7 @@ const toggleContrast = () => {
 #### `src/components/blog/ReadingTime.tsx`
 
 ```tsx
-<span className="flex items-center gap-1 text-sm text-[var(--fg-muted)]">
+<span className="flex items-center gap-1 text-sm font-mono text-[var(--fg-muted)]">
   {/* Clock SVG */}
   {minutes} min read
 </span>

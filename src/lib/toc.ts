@@ -1,13 +1,5 @@
 import type { TocItem, FaqItem } from '@/types/blog'
-
-function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.replace(/[^a-z0-9\s-]/g, '')
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-')
-		.trim()
-}
+import { slugify } from '@/lib/utils'
 
 export function addHeadingIds(htmlContent: string): string {
 	return htmlContent.replace(/<h([23])([^>]*)>(.*?)<\/h[23]>/gi, (_match, level, attrs, inner) => {

@@ -38,7 +38,6 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
-				<link rel="stylesheet" href="/oat.min.css" />
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
 			</head>
 			<body className="antialiased bg-[var(--bg)] text-[var(--fg)]">

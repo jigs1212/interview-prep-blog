@@ -4,7 +4,7 @@ interface ReadingTimeProps {
 
 export default function ReadingTime({ minutes }: ReadingTimeProps) {
 	return (
-		<span className="inline-flex items-center gap-1 text-sm text-[var(--fg-muted)]">
+		<span className="inline-flex items-center gap-1 text-sm font-mono text-[var(--fg-muted)]">
 			<svg
 				className="w-4 h-4"
 				fill="none"
