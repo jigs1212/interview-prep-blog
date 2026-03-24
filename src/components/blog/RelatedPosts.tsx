@@ -17,7 +17,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 					<Link
 						key={post.slug}
 						href={`/${post.slug}/`}
-						className="block p-4 rounded-lg border border-[var(--border)] hover:border-[var(--fg-muted)] hover:shadow-sm transition-all"
+						className="block p-4 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] hover:border-[var(--accent-border)] hover:shadow-[0_0_16px_var(--accent-glow)] transition-all"
 					>
 						<div className="mb-2">
 							<CategoryBadge name={post.category} />

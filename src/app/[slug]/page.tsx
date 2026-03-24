@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/posts'
 import { SITE_URL, SITE_NAME, generateArticleJsonLd, generateBreadcrumbJsonLd, generateFaqJsonLd } from '@/lib/seo'
-import TableOfContents from '@/components/blog/TableOfContents'
+import ArticleLayout from '@/components/blog/ArticleLayout'
 import ShareButtons from '@/components/blog/ShareButtons'
 import RelatedPosts from '@/components/blog/RelatedPosts'
 import ReadingTime from '@/components/blog/ReadingTime'
@@ -10,6 +10,7 @@ import CategoryBadge from '@/components/ui/CategoryBadge'
 import Tag from '@/components/ui/Tag'
 import PillarPageLink from '@/components/blog/PillarPageLink'
 import LeadMagnet from '@/components/blog/LeadMagnet'
+import TableOfContents from '@/components/blog/TableOfContents'
 
 export function generateStaticParams() {
 	return getAllPosts().map(post => ({ slug: post.slug }))
@@ -77,54 +78,44 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
 			/>
 		)}
-		<div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10">
-			{/* Left column — TOC */}
-			<aside className="hidden lg:block">
-				<div className="sticky top-24">
-					<TableOfContents toc={post.toc} />
+		<ArticleLayout slug={post.slug} toc={post.toc}>
+			<header className="mb-8">
+				<h1 className="text-3xl font-bold mb-3">{post.title}</h1>
+				<div className="flex items-center flex-wrap gap-3 mb-4">
+					<span className="text-sm text-[var(--fg-muted)]">{post.date}</span>
+					<span className="text-[var(--fg-muted)]">·</span>
+					<ReadingTime minutes={post.readingTime} />
+					<span className="text-[var(--fg-muted)]">·</span>
+					<CategoryBadge name={post.category} />
 				</div>
-			</aside>
-
-			{/* Main column — Article */}
-			<article className="min-w-0">
-				<header className="mb-8">
-					<h1 className="text-3xl font-bold mb-3">{post.title}</h1>
-					<div className="flex items-center flex-wrap gap-3 mb-4">
-						<span className="text-sm text-[var(--fg-muted)]">{post.date}</span>
-						<span className="text-[var(--fg-muted)]">·</span>
-						<ReadingTime minutes={post.readingTime} />
-						<span className="text-[var(--fg-muted)]">·</span>
-						<CategoryBadge name={post.category} />
-					</div>
-					<div className="flex flex-wrap gap-1.5">
-						{post.tags.map(tag => (
-							<Tag key={tag} name={tag} />
-						))}
-					</div>
-				</header>
-
-				{/* Mobile TOC */}
-				<div className="lg:hidden mb-8 p-4 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)]">
-					<TableOfContents toc={post.toc} />
+				<div className="flex flex-wrap gap-1.5">
+					{post.tags.map(tag => (
+						<Tag key={tag} name={tag} />
+					))}
 				</div>
+			</header>
 
-				<div
-					className="prose max-w-none"
-					dangerouslySetInnerHTML={{ __html: post.content }}
+			{/* Mobile TOC */}
+			<div className="lg:hidden mb-8 p-4 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)]">
+				<TableOfContents toc={post.toc} />
+			</div>
+
+			<div
+				className="prose max-w-none"
+				dangerouslySetInnerHTML={{ __html: post.content }}
+			/>
+
+			<div className="mt-8 pt-6 border-t border-[var(--border)]">
+				<ShareButtons
+					title={post.title}
+					url={`${SITE_URL}/${post.slug}/`}
 				/>
+			</div>
 
-				<div className="mt-8 pt-6 border-t border-[var(--border)]">
-					<ShareButtons
-						title={post.title}
-						url={`${SITE_URL}/${post.slug}/`}
-					/>
-				</div>
-
-				<PillarPageLink />
-				<LeadMagnet />
-				<RelatedPosts posts={related} />
-			</article>
-		</div>
+			<PillarPageLink />
+			<LeadMagnet />
+			<RelatedPosts posts={related} />
+		</ArticleLayout>
 		</>
 	)
 }

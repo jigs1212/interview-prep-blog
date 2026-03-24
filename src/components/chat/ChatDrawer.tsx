@@ -8,10 +8,13 @@ import type { ChatMessage as ChatMessageType, ArticleSection } from '@/lib/chat/
 
 interface ChatDrawerProps {
 	slug: string
+	isOpen?: boolean
+	onToggle?: (open: boolean) => void
 }
 
-export default function ChatDrawer({ slug }: ChatDrawerProps) {
-	const [isOpen, setIsOpen] = useState(true)
+export default function ChatDrawer({ slug, isOpen: externalIsOpen, onToggle }: ChatDrawerProps) {
+	const [internalIsOpen, setInternalIsOpen] = useState(true)
+	const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen
 	const [messages, setMessages] = useState<ChatMessageType[]>([])
 	const [isLoading, setIsLoading] = useState(false)
 	const [isMounted, setIsMounted] = useState(false)
@@ -22,8 +25,11 @@ export default function ChatDrawer({ slug }: ChatDrawerProps) {
 		setIsMounted(true)
 		const saved = localStorage.getItem('chatDrawerOpen')
 		if (saved !== null) {
-			setIsOpen(saved !== 'false')
+			const open = saved !== 'false'
+			setInternalIsOpen(open)
+			onToggle?.(open)
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
@@ -45,12 +51,11 @@ export default function ChatDrawer({ slug }: ChatDrawerProps) {
 	}, [messages])
 
 	const toggle = useCallback(() => {
-		setIsOpen(prev => {
-			const next = !prev
-			localStorage.setItem('chatDrawerOpen', String(next))
-			return next
-		})
-	}, [])
+		const next = !isOpen
+		setInternalIsOpen(next)
+		localStorage.setItem('chatDrawerOpen', String(next))
+		onToggle?.(next)
+	}, [isOpen, onToggle])
 
 	useEffect(() => {
 		const handler = (e: KeyboardEvent) => {

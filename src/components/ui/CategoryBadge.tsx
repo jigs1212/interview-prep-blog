@@ -17,7 +17,7 @@ export default function CategoryBadge({ name }: CategoryBadgeProps) {
 	return (
 		<Link
 			href={`/category/${slugify(name)}/`}
-			className="inline-block text-xs font-medium px-2.5 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
+			className="inline-block text-xs font-medium px-2.5 py-1 rounded bg-[var(--accent-muted)] text-[var(--accent)] hover:bg-[var(--accent-border)] transition-colors"
 		>
 			{name}
 		</Link>

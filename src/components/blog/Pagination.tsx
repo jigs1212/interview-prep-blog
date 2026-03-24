@@ -55,7 +55,7 @@ export default function Pagination({ currentPage, totalPages, basePath }: Pagina
 						href={`${basePath}/${page}/`}
 						className={`px-3 py-2 text-sm rounded transition-colors ${
 							page === currentPage
-								? 'bg-[var(--accent)] text-white font-medium'
+								? 'bg-[var(--accent)] text-[var(--bg)] font-medium'
 								: 'border border-[var(--border)] text-[var(--fg-muted)] hover:border-[var(--fg-muted)] hover:text-[var(--fg)]'
 						}`}
 					>

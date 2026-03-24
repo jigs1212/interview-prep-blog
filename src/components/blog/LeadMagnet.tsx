@@ -55,7 +55,7 @@ function LeadMagnetInner() {
 				/>
 				<button
 					type="submit"
-					className="px-4 py-2 rounded-lg bg-[var(--accent)] text-white text-sm font-medium hover:opacity-90 transition-opacity shrink-0"
+					className="px-4 py-2 rounded-lg bg-[var(--accent)] text-[var(--bg)] text-sm font-medium hover:opacity-90 transition-opacity shrink-0"
 				>
 					Download Free PDF
 				</button>

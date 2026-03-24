@@ -120,7 +120,7 @@ export default function SearchBar() {
 									>
 										<div className="flex items-center gap-2 mb-0.5">
 											<span className="font-medium text-[var(--fg)]">{item.title}</span>
-											<span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+											<span className="text-xs px-1.5 py-0.5 rounded bg-[var(--accent-muted)] text-[var(--accent)] border border-[var(--accent-border)]">
 												{item.category}
 											</span>
 										</div>
