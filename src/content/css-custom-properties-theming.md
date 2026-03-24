@@ -1,47 +1,37 @@
 ---
 slug: "css-custom-properties-theming"
-title: "CSS Custom Properties for Theming: Dark Mode, Contrast & Beyond"
-description: "Master CSS custom properties for senior interviews — covers theming architecture, dark mode without flash, high-contrast a11y, and Tailwind integration patterns."
+title: "CSS Custom Properties for Theming Interviews"
+description: "CSS custom properties for theming — cascade specificity, @property registration, design tokens, Shadow DOM, and animation for senior interviews."
 category: "CSS"
 subcategory: "Custom Properties"
-tags: ["css", "custom-properties", "dark-mode", "theming", "accessibility"]
+tags: ["css", "custom-properties", "theming", "cascade", "design-tokens", "accessibility"]
 date: "2026-03-25"
-related: ["css-layout-interview-questions", "web-accessibility-deep-dive"]
+related: ["nextjs-dark-mode-theming", "css-layout-interview-questions", "web-accessibility-deep-dive"]
 ---
 
-## Introduction
+## Beginner Concepts
 
-CSS custom properties — commonly called CSS variables — are one of the most powerful primitives available to frontend developers today. Unlike preprocessor variables (Sass, Less), they live in the cascade, are readable and writable at runtime from JavaScript, and enable entire theming systems without a single line of JavaScript for the visual rendering itself.
+CSS custom properties are variables prefixed with `--` and consumed via `var()`. Unlike Sass or Less variables that compile away into static values, custom properties exist at runtime and participate in the cascade. This distinction is the foundation of every theming system built on native CSS.
 
-For senior engineers, the questions go well beyond `var(--color)`. Interviewers test whether you understand cascade specificity with custom properties, the difference between registered and unregistered properties, performance implications, and how to architect a multi-theme system that is both accessible and flash-free. For a complete overview of senior frontend interview topics, see our [Senior Frontend Interview Questions guide](/senior-frontend-interview-questions/).
-
-This post walks through building a production-grade theming system from scratch, using the same approach used in this blog — `data-theme` / `data-contrast` attributes, design tokens, Tailwind arbitrary-value integration, and a no-flash persistence layer.
-
----
-
-## What Are CSS Custom Properties?
-
-CSS custom properties are variables prefixed with `--` and consumed via `var()`. Unlike preprocessor variables which are compiled away, custom properties exist at runtime and participate in the cascade.
-
-The following demonstrates the core syntax and cascade behaviour:
+### Core Syntax and Fallbacks
 
 ```css
 :root {
-  --color-accent: #30ff90;
+	--color-accent: #30ff90;
 }
 
 .button {
-  background: var(--color-accent);
-  /* Fallback if the variable is not defined */
-  color: var(--text-on-accent, #000000);
+	background: var(--color-accent);
+	/* Fallback if the variable is not defined */
+	color: var(--text-on-accent, #000000);
 }
 ```
 
-The `var()` function accepts an optional second argument — a fallback value. This is evaluated lazily: if `--text-on-accent` is set anywhere in the cascade above `.button`, the fallback is never used.
+The `var()` function accepts an optional second argument — a fallback value. This fallback is evaluated lazily: if `--text-on-accent` is defined anywhere in the cascade above `.button`, the fallback is never used. Fallbacks can themselves contain `var()` references, enabling chains like `var(--brand, var(--accent, #000))`.
 
-### Why Custom Properties Beat Preprocessor Variables
+### Preprocessor Variables vs Custom Properties
 
-The critical interview distinction: Sass variables are resolved at **compile time** and produce static CSS. CSS custom properties resolve at **paint time** and can change without re-parsing or re-compiling styles.
+Sass variables resolve at **compile time** and produce static CSS. Custom properties resolve at **computed-value time** and can change without recompiling anything.
 
 ```scss
 // Sass — compiled away; cannot change at runtime
@@ -50,262 +40,275 @@ $accent: #30ff90;
 ```
 
 ```css
-/* CSS — lives in the cascade; can change with a single setAttribute */
+/* CSS — lives in the cascade; changes with a single setAttribute */
 :root { --accent: #30ff90; }
 .button { background: var(--accent); }
 ```
 
-This runtime mutability is what makes JavaScript-free theme switching possible.
+This runtime mutability is what makes JavaScript-free theme switching possible. When you change `--accent` on an ancestor element, every descendant using `var(--accent)` repaints automatically.
+
+### Inheritance and the Cascade
+
+Custom properties inherit by default. A property set on `:root` is available to every element in the document tree. Setting the same property on a more specific element overrides it for that subtree only — standard cascade rules apply.
+
+```css
+:root { --fg: #e6edf3; }
+.sidebar { --fg: #8b949e; }
+
+/* Paragraphs inside .sidebar get #8b949e */
+/* Paragraphs outside .sidebar get #e6edf3 */
+p { color: var(--fg); }
+```
+
+This subtree scoping is what makes component-level theme overrides possible without any JavaScript.
+
+For a complete overview of senior frontend interview topics, see our [Senior Frontend Interview Questions guide](/senior-frontend-interview-questions/).
 
 ---
 
-## Designing a Token System
+## Intermediate Patterns
 
-A design token is a named design decision — a colour, spacing value, border radius — expressed as a custom property. The key is to name tokens by **role**, not by **value**.
+### Design Token Architecture
 
-Naming by value (`--green-500`) breaks the moment the same token needs to represent something different in light mode. Naming by role (`--accent`) stays semantically stable across themes.
+A design token is a named design decision — a colour, spacing value, or border radius — expressed as a custom property. The key principle: **name tokens by role, not by value**.
 
-The following token set drives the entire theming layer of this blog:
+Naming by value (`--green-500`) breaks the moment the same token needs to represent something different in a light theme. Naming by role (`--accent`) stays semantically stable across every variant. This distinction is one of the most common interview topics around theming architecture.
+
+A well-structured token system uses two layers:
+
+1. **Primitive tokens** — raw values like `--green-500: #30ff90` that map directly to a colour palette
+2. **Semantic tokens** — role-based aliases like `--accent: var(--green-500)` that components actually consume
+
+Components should only reference semantic tokens. The primitive layer exists solely to feed the semantic layer.
+
+### The Four-Combo Token Pattern
+
+A production token system needs to handle multiple independent axes. The following pattern uses `data-theme` and `data-contrast` attributes to create four distinct visual combinations from a single set of semantic token names:
 
 ```css
 :root,
-[data-theme="dark"] {
-  --bg:            #0d1117;
-  --bg-secondary:  #161b22;
-  --fg:            #e6edf3;
-  --fg-muted:      #8b949e;
-  --border:        #30363d;
-  --accent:        #30ff90;
-  --accent-hover:  #5cffab;
-  --accent-muted:  rgba(48, 255, 144, 0.08);
-  --accent-border: rgba(48, 255, 144, 0.2);
-  --accent-glow:   rgba(48, 255, 144, 0.3);
-  --code-bg:       #0d1117;
-  --code-fg:       #e6edf3;
+[data-theme='dark'] {
+	--bg:            #0d1117;
+	--bg-secondary:  #161b22;
+	--fg:            #e6edf3;
+	--fg-muted:      #8b949e;
+	--border:        #30363d;
+	--accent:        #30ff90;
+	--accent-hover:  #5cffab;
+	--accent-muted:  rgba(48, 255, 144, 0.08);
+	--accent-border: rgba(48, 255, 144, 0.2);
+	--accent-glow:   rgba(48, 255, 144, 0.3);
+	--code-bg:       #0d1117;
+	--code-fg:       #e6edf3;
 }
 
-[data-theme="light"] {
-  --bg:            #f5f0e8;
-  --bg-secondary:  #ebe5d6;
-  --fg:            #1c1917;
-  --fg-muted:      #57534e;
-  --border:        #d6d0c4;
-  --accent:        #1a6b3c;
-  --accent-hover:  #15573a;
-  --accent-muted:  rgba(26, 107, 60, 0.08);
-  --accent-border: rgba(26, 107, 60, 0.2);
-  --accent-glow:   rgba(26, 107, 60, 0.15);
-  --code-bg:       #1c1917;
-  --code-fg:       #f5f0e8;
+[data-theme='light'] {
+	--bg:            #f5f0e8;
+	--bg-secondary:  #ebe5d6;
+	--fg:            #1c1917;
+	--fg-muted:      #57534e;
+	--border:        #d6d0c4;
+	--accent:        #1a6b3c;
+	--accent-hover:  #15573a;
+	--accent-muted:  rgba(26, 107, 60, 0.08);
+	--accent-border: rgba(26, 107, 60, 0.2);
+	--accent-glow:   rgba(26, 107, 60, 0.15);
+	--code-bg:       #1c1917;
+	--code-fg:       #f5f0e8;
 }
 ```
 
-Notice there is no class-based approach (`.dark`, `.light`). The `data-theme` attribute on `<html>` acts as a global context switch. Any component on the page automatically picks up the correct values because every `var(--*)` call re-resolves against the cascade whenever an ancestor's attribute changes.
+The `data-theme` attribute on `<html>` acts as a global context switch. Any element using `var(--accent)` re-resolves automatically when the attribute changes. No JavaScript re-renders, no component updates — the browser handles everything through the cascade.
 
-### Why `data-theme` Over `.dark`
+### Why `data-*` Attributes Over Classes
 
-Both work. The practical advantage of attributes is that they communicate intent more clearly and do not pollute the class list alongside utility classes. They also compose cleanly — `[data-theme="light"][data-contrast="high"]` is an unambiguous compound selector that cannot accidentally match `.dark.high` class conflicts.
+Both `[data-theme="dark"]` and `.dark` work as selectors. Attributes are preferred because they communicate intent more clearly and do not collide with utility class names. They also compose cleanly into compound selectors — `[data-theme="light"][data-contrast="high"]` is unambiguous, while `.light.high` risks class name conflicts.
 
----
+### Specificity with Data Attributes
 
-## High Contrast as a Second Axis
-
-Accessibility standards (WCAG 2.1 AA) require a 4.5:1 contrast ratio for normal text and 3:1 for large text. Some users enable high-contrast mode in their operating system, and your site should respect or augment that preference.
-
-A second attribute `data-contrast` makes high contrast an independent toggle that layers on top of whichever theme is active:
+The cascade handles multi-axis theming naturally. A single attribute selector has specificity `0,1,0`. A compound selector like `[data-theme="light"][data-contrast="high"]` has specificity `0,2,0` and overrides any single-attribute rule without needing `!important`:
 
 ```css
-[data-contrast="high"] {
-  --border:        #e6edf3;
-  --fg-muted:      #c9d1d9;
-  --accent:        #3fff9a;
-  --accent-muted:  rgba(63, 255, 154, 0.15);
-  --accent-border: rgba(63, 255, 154, 0.35);
-  --accent-glow:   rgba(63, 255, 154, 0.4);
+[data-contrast='high'] {
+	--border:        #e6edf3;
+	--fg-muted:      #c9d1d9;
+	--accent:        #3fff9a;
+	--accent-muted:  rgba(63, 255, 154, 0.15);
+	--accent-border: rgba(63, 255, 154, 0.35);
+	--accent-glow:   rgba(63, 255, 154, 0.4);
 }
 
-/* Light theme + high contrast needs its own overrides */
-[data-theme="light"][data-contrast="high"] {
-  --border:        #1c1917;
-  --fg-muted:      #292524;
-  --accent:        #15573a;
-  --accent-muted:  rgba(21, 87, 58, 0.15);
-  --accent-border: rgba(21, 87, 58, 0.35);
-  --accent-glow:   rgba(21, 87, 58, 0.25);
-}
-```
-
-Because the cascade evaluates selectors in specificity order, `[data-theme][data-contrast]` (two attribute selectors, specificity `0,2,0`) correctly overrides the single-attribute rules (`0,1,0`). No `!important` required.
-
----
-
-## Switching Themes Without a Flash
-
-The hardest part of server-rendered theming. If you read `localStorage` inside a `useEffect`, React has already painted the page once with the server-side default, causing a visible colour flash. The fix is an **inline blocking script** that runs before the browser's first paint.
-
-```tsx
-// app/layout.tsx
-const themeScript = `(function(){
-  try {
-    var d = document.documentElement;
-    var t = localStorage.getItem('theme');
-    if (!t) {
-      t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-    }
-    d.classList.toggle('dark', t === 'dark');
-    d.setAttribute('data-theme', t);
-    var c = localStorage.getItem('contrast') || 'normal';
-    d.setAttribute('data-contrast', c);
-  } catch(e) {}
-})();`
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body>{children}</body>
-    </html>
-  )
+/* Compound selector: 0,2,0 specificity — beats [data-contrast] alone */
+[data-theme='light'][data-contrast='high'] {
+	--border:        #1c1917;
+	--fg-muted:      #292524;
+	--accent:        #15573a;
+	--accent-muted:  rgba(21, 87, 58, 0.15);
+	--accent-border: rgba(21, 87, 58, 0.35);
+	--accent-glow:   rgba(21, 87, 58, 0.25);
 }
 ```
 
-Key details:
-- The script is wrapped in an IIFE and uses `try/catch` to handle environments where `localStorage` is unavailable (private browsing, server-side rendering).
-- `suppressHydrationWarning` on `<html>` prevents React from complaining that the server-rendered `data-theme` attribute differs from what it expected — it will differ intentionally since the script may have changed it.
-- The script checks `prefers-color-scheme` as the default so first-time visitors get the correct theme without any stored preference.
-
-### Common Interview Pitfall
-
-Interviewers often ask: why not just set a cookie from the server and read it during SSR to avoid the script entirely? The answer: cookies work, but they require the server to read and apply the theme on every request, complicating caching strategies. The inline script approach is stateless on the server and works with any static deployment.
+This is the CSS-native way to model accessibility. High contrast is an independent axis layered on top of any theme — no duplication of component code required.
 
 ---
 
-## Integrating Custom Properties with Tailwind CSS
+## Advanced Techniques
 
-Tailwind's arbitrary value syntax bridges the gap between utility classes and CSS custom properties:
+### `@property` Registration
 
-```tsx
-// Background and text
-<div className="bg-[var(--bg)] text-[var(--fg)]">
+Unregistered custom properties are treated as strings by the browser. This means CSS transitions and animations cannot interpolate them — the browser does not know whether the value is a colour, a length, or arbitrary text.
 
-// With opacity modifier (Tailwind 3.x+)
-<div className="bg-[var(--bg)]/80 backdrop-blur-sm">
+The `@property` rule registers a custom property with an explicit type, enabling smooth animation:
 
-// Border
-<div className="border border-[var(--border)]">
+```css
+@property --hue {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 150;
+}
 
-// Glow effect via box-shadow
-<article className="hover:shadow-[0_0_20px_var(--accent-glow)]">
+.element {
+	--hue: 150;
+	background: hsl(var(--hue), 80%, 50%);
+	transition: --hue 600ms ease;
+}
 
-// When arbitrary value won't accept the syntax, use inline style
-<div style={{ boxShadow: '0 0 8px var(--accent-glow)' }}>
+.element:hover {
+	--hue: 280;
+}
 ```
 
-This hybrid approach is intentional: Tailwind handles **layout and spacing** (which are not theme-dependent), while CSS custom properties handle **colour and visual tone** (which must switch at runtime). Never hardcode colour utility classes like `bg-gray-900` in a themeable component — they ignore the cascade.
+Without `@property`, the transition would snap instantly. With it, the browser interpolates `--hue` from 150 to 280 over 600ms.
 
-### What Tailwind Cannot Do
+Common syntax types include `<color>`, `<length>`, `<number>`, `<percentage>`, `<integer>`, and `<length-percentage>`. You can also use `<custom-ident>` for discrete keyword values or `*` for any value (though `*` disables animation).
 
-Tailwind's JIT compiler generates class names at build time. `bg-[var(--bg)]` generates one static class whose `background` value contains a `var()` reference — it works. However, dynamic class names like `` `bg-[${color}]` `` computed in JSX do not work unless Tailwind's class-scanning step encounters the literal string. Always prefer named tokens consumed via `var()` over dynamic string interpolation.
+### Animating Theme Transitions
 
----
+Combining `@property` with the token system enables smooth visual transitions when switching themes:
 
-## Component Patterns
+```css
+@property --accent-color {
+	syntax: '<color>';
+	inherits: true;
+	initial-value: #30ff90;
+}
 
-### Active State Navigation
+* {
+	transition: --accent-color 300ms ease;
+}
 
-The sidebar uses a `data-*` pattern via conditional class application. The key point is that active state colour comes from `--accent` and `--bg-secondary` — tokens, not hardcoded values:
-
-```tsx
-<Link
-  className={`px-3 py-2 rounded-md text-sm transition-colors ${
-    isActive
-      ? 'bg-[var(--bg-secondary)] text-[var(--fg)] border-l-[3px] border-[var(--accent)]'
-      : 'text-[var(--fg-muted)] hover:bg-[var(--bg-secondary)] hover:text-[var(--fg)] border-l-[3px] border-transparent'
-  }`}
->
-  All Posts
-</Link>
+[data-theme='dark'] { --accent-color: #30ff90; }
+[data-theme='light'] { --accent-color: #1a6b3c; }
 ```
 
-### Glow on Hover (Accent-coloured Shadow)
+The trade-off: registering many properties and applying transitions broadly can increase paint workload. Profile before shipping this in production.
 
-Blog cards use `--accent-glow` — a low-opacity rgba version of the accent — as a `box-shadow` to create a subtle focus indicator consistent with the theme:
+### `inherits: true` vs `inherits: false`
 
-```tsx
-<article className="border border-[var(--border)] bg-[var(--bg-secondary)] rounded-lg hover:border-[var(--accent-border)] hover:shadow-[0_0_20px_var(--accent-glow)] transition-all">
+When `inherits` is `true`, the property participates in normal CSS inheritance — children get the parent's value. When `false`, each element starts with the `initial-value` unless explicitly set. Most design tokens should use `inherits: true` because the entire point of a token system is cascade-based inheritance. Use `inherits: false` for per-element animation properties like progress indicators or opacity multipliers that should not leak to children.
+
+### Custom Properties and Shadow DOM
+
+Custom properties cross Shadow DOM boundaries. A property defined on `:root` in the light DOM is readable from inside a shadow root via `var()`. This makes them the standard mechanism for theming web components — the host application defines the tokens, the component consumes them.
+
+```css
+/* Light DOM — host application */
+:root {
+	--brand-accent: #30ff90;
+	--brand-bg: #0d1117;
+}
 ```
 
-When the user switches to light mode, `--accent-glow` changes from a bright green rgba to a deep-green rgba automatically. No component code changes.
-
-### Glassmorphism Panel
-
-Adding `backdrop-blur` with a semi-transparent token creates a frosted-glass panel effect without any additional JavaScript:
-
-```tsx
-<aside className="bg-[var(--bg)]/80 backdrop-blur-sm border border-[var(--border)] rounded-lg">
-  <TableOfContents />
-</aside>
+```css
+/* Inside a shadow root — web component */
+:host {
+	background: var(--brand-bg);
+	color: var(--brand-accent);
+}
 ```
 
-The `/80` opacity modifier tells Tailwind to apply 80% opacity to whatever `--bg` resolves to. The backdrop filter then blurs whatever is rendered behind the element — in this case the grid-texture background — while keeping the content legible.
+There is one caveat: `@property` registered properties do not reliably cross Shadow DOM boundaries in all browsers. If you need animation support inside a web component, register the property inside the shadow root as well.
+
+### Subtree Theme Scoping
+
+Because custom properties follow the cascade, any element can become a theme boundary. Setting `data-theme="light"` on a specific container overrides tokens for that subtree only:
+
+```css
+/* Global dark */
+[data-theme='dark'] { --bg: #0d1117; --fg: #e6edf3; }
+
+/* This section renders in light mode regardless of the global theme */
+section[data-theme='light'] { --bg: #f5f0e8; --fg: #1c1917; }
+```
+
+All descendants of that section resolve `var(--bg)` and `var(--fg)` against the light values. No JavaScript required — pure cascade behaviour.
 
 ---
 
 ## Scenario-Based Questions
 
-### How Would You Add a Third "Sepia" Theme?
+### How would you add a third "sepia" theme to an existing system?
 
-Add a `[data-theme="sepia"]` block to your CSS with appropriate token values. Update `ThemeToggle` to cycle through three states instead of two, storing `"sepia"` in `localStorage`. The inline script in `layout.tsx` already reads from `localStorage` generically — no changes needed there. Every component automatically adopts sepia colours via the cascade.
+Add a `[data-theme="sepia"]` block with appropriate token values. The toggle logic cycles through three states instead of two, storing `"sepia"` in the persistence layer. Every component automatically adopts sepia colours via the cascade since they reference tokens, not hardcoded values. The high-contrast layer may need a `[data-theme="sepia"][data-contrast="high"]` compound rule if the default sepia tokens do not meet WCAG requirements.
 
-### What Happens if `localStorage` Is Unavailable?
+### How would you architect a token system for a component library consumed by multiple apps?
 
-The inline script is wrapped in `try/catch`. If `localStorage` throws (private browsing in some browsers, third-party cookie restrictions), the `catch` block prevents a runtime error. The result is the site renders with its default theme (dark). A progressively enhanced fallback could read `prefers-color-scheme` as the default, which the script already does for first-time visitors.
+Design the library to consume semantic tokens with sensible fallbacks rather than hardcoding colours. Document the expected token names and their types. The consuming application defines those tokens in its own stylesheet, overriding the library defaults. This decouples the visual layer from component logic entirely.
 
-### How Do You Prevent a Contrast-Toggle Flash on Navigation?
+```css
+/* Library default */
+:root { --lib-accent: var(--accent, #0066cc); }
+/* Consumer overrides --accent; library picks it up automatically */
+```
 
-In a Next.js App Router app, `layout.tsx` is rendered once and persists across client-side navigations. The inline script runs only on full page loads, not soft navigations. Since the `data-contrast` attribute is set on `<html>` which persists across route changes, there is no flash. If you were using a multi-page app without a persistent shell, you would need the script in each page's `<head>`.
+### How do you handle theming when components render in iframes?
+
+Custom properties do not cross iframe boundaries — each iframe has its own document. You need to either inject the token stylesheet into the iframe's document or use `postMessage` to communicate the active theme so the iframe's own script can set the correct `data-theme` attribute. For same-origin iframes, you can also directly access `iframe.contentDocument.documentElement.setAttribute('data-theme', theme)`.
+
+### How would you prevent a theme flash on a static site?
+
+Place an inline blocking `<script>` in the `<head>` that reads the stored preference from `localStorage` and sets the `data-theme` attribute before the browser's first paint. The script must be synchronous (no `async` or `defer`). For a Next.js implementation of this pattern, see [Dark Mode Without Flash in Next.js](/nextjs-dark-mode-theming/).
 
 ---
 
 ## Rapid Fire
 
 **Q: Can you animate CSS custom property values?**
-A: Not directly with CSS transitions — the browser does not know how to interpolate an unregistered custom property. Use `@property` to register the property with a syntax type, and then transitions work. Example: `@property --accent-opacity { syntax: '<number>'; inherits: false; initial-value: 1; }`.
-
-**Q: What is the difference between `inherit: true` and `inherit: false` in `@property`?**
-A: `inherits: true` means the property participates in normal CSS inheritance (children inherit the value from parents). `inherits: false` means each element starts fresh with the `initial-value`. Most design tokens should use `inherits: true`.
+A: Not without `@property` registration. Unregistered properties are strings and cannot be interpolated. Register with a `syntax` type like `<color>` or `<number>` and transitions work.
 
 **Q: Can a custom property reference another custom property?**
-A: Yes. `--accent-muted: rgba(var(--accent-rgb), 0.08)` works if `--accent-rgb` is a raw RGB triplet. The values are resolved lazily at computed-value time.
+A: Yes. `--accent-muted: rgba(var(--accent-rgb), 0.08)` works if `--accent-rgb` is a raw RGB triplet. Values resolve lazily at computed-value time.
 
 **Q: Does changing `data-theme` trigger a repaint or reflow?**
-A: It triggers a repaint (colour change) but not a reflow (layout change), assuming only colour tokens change. Avoiding reflows is why spacing and layout values should not be in theme-switchable tokens.
+A: Repaint only, assuming only colour tokens change. Reflows require geometry changes (dimensions, margins, font sizes). Keep spacing and layout values out of theme-switchable tokens.
 
-**Q: How do you test theming in Playwright?**
-A: Set `page.addInitScript` to inject `localStorage.setItem('theme', 'light')` before navigation, or use `page.evaluate` to call `document.documentElement.setAttribute('data-theme', 'light')` after navigation. Both approaches work without modifying production code.
+**Q: What happens if a `var()` references an undefined property with no fallback?**
+A: The property receives the `unset` value. For inherited properties, this means the inherited value. For non-inherited properties, this means the initial value. It does not cause a CSS parse error.
+
+**Q: How do custom properties affect CSS file size compared to Sass variables?**
+A: Custom properties increase the output CSS slightly because `var()` calls remain in the compiled output. Sass variables compile away entirely. The difference is negligible — usually a few hundred bytes — and is offset by eliminating duplicate rule sets for each theme variant.
 
 ---
 
 ## Frequently Asked Questions
 
-### What is the difference between CSS custom properties and Sass variables?
-
-Sass variables are resolved at compile time and produce static CSS values. They cannot change at runtime without recompiling the stylesheet. CSS custom properties resolve at paint time, participate in the cascade, are inherited by child elements, and can be read and written from JavaScript via `getComputedStyle` and `style.setProperty`. This runtime mutability makes CSS custom properties the correct choice for any theming system that switches visually without a page reload.
-
 ### When should you use `@property` to register a custom property?
 
-Register a property with `@property` when you need to animate it with CSS transitions or keyframe animations, or when you need strict type checking on its value. Unregistered properties are treated as strings and cannot be interpolated by the browser's animation engine. Use `@property` for properties like opacity multipliers, HSL hue values, or progress indicators that you want to animate smoothly.
-
-### How do you handle theming in a component library that is consumed by applications with different themes?
-
-Design the library to consume CSS custom properties with sensible fallbacks rather than hardcoding colours. Document the expected token names your components rely on. The consuming application defines those tokens in its own stylesheet. This is the approach used in this blog — the design tokens are defined in `globals.css`, and every component references them via `var()`, keeping the visual layer completely decoupled from the component logic.
+Register a property with `@property` when you need to animate it with CSS transitions or keyframe animations, or when you need strict type checking on its value. Unregistered properties are treated as strings and cannot be interpolated by the browser's animation engine. Common use cases include opacity multipliers, HSL hue values, gradient stops, and progress indicators that need smooth transitions.
 
 ### Does using CSS custom properties impact performance?
 
-The overhead is negligible for most applications. Custom properties are resolved at computed-value time, not paint time, so the browser only does extra work when a property value changes. The performance-sensitive scenario is having deeply nested elements that all recalculate when a root token changes — this is unavoidable with any theming approach. Avoid declaring custom properties inside frequently animated elements or scroll handlers, as that triggers unnecessary recalculations.
+The overhead is negligible for most applications. Custom properties are resolved at computed-value time, so the browser only does extra work when a property value changes. The performance-sensitive scenario is deeply nested elements that all recalculate when a root token changes — but this is unavoidable with any theming approach. Avoid declaring custom properties inside frequently animated elements or scroll handlers, as that triggers unnecessary style recalculations.
 
 ### How do CSS custom properties interact with Shadow DOM?
 
-Custom properties cross Shadow DOM boundaries. A property defined on `:root` in the light DOM is readable from inside a shadow root via `var()`. This makes them the standard mechanism for theming web components — the host application defines the token, the component consumes it. However, `@property` registered properties do not cross Shadow DOM boundaries in all browsers, so register them inside the shadow root if you need animation support.
+Custom properties cross Shadow DOM boundaries by default. A property defined on `:root` in the light DOM is readable from inside a shadow root via `var()`. This makes them the primary mechanism for theming web components. However, `@property` registered properties do not cross shadow boundaries in all browsers — register them inside the shadow root if you need animation support within a web component.
+
+### What is the difference between `:root` and `html` for defining tokens?
+
+They refer to the same element in HTML documents. `:root` has the specificity of a pseudo-class (`0,1,0`), while `html` as a type selector has specificity `0,0,1`. In practice, this difference rarely matters because theme selectors like `[data-theme]` override both. The convention is to use `:root` for global tokens because it reads as semantically meaningful — "the root of the document" — rather than being tied to a specific tag name.
+
+### Can you use CSS custom properties in media queries?
+
+No. Media query conditions are evaluated before the cascade resolves, so `@media (min-width: var(--breakpoint))` does not work. Custom properties can only be used in property values, not in at-rule conditions. For dynamic breakpoints, you need JavaScript (`window.matchMedia`) or container queries, which evaluate against element dimensions rather than viewport dimensions.
