@@ -76,7 +76,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 
 			{/* Mobile menu overlay */}
 			{mobileMenuOpen && (
-				<div className="lg:hidden fixed inset-0 z-50">
+				<div className="lg:hidden fixed inset-0 z-[60]">
 					<div
 						className="absolute inset-0 bg-black/50"
 						onClick={() => setMobileMenuOpen(false)}
