@@ -23,11 +23,19 @@ export default function ChatDrawer({ slug, isOpen: externalIsOpen, onToggle }: C
 
 	useEffect(() => {
 		setIsMounted(true)
+		const isMobile = window.innerWidth < 1024
 		const saved = localStorage.getItem('chatDrawerOpen')
 		if (saved !== null) {
 			const open = saved !== 'false'
-			setInternalIsOpen(open)
-			onToggle?.(open)
+			// On mobile, always start closed regardless of saved preference
+			const shouldOpen = isMobile ? false : open
+			setInternalIsOpen(shouldOpen)
+			onToggle?.(shouldOpen)
+		} else {
+			// No saved preference — default closed on mobile, open on desktop
+			const defaultOpen = !isMobile
+			setInternalIsOpen(defaultOpen)
+			onToggle?.(defaultOpen)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
@@ -94,11 +102,32 @@ export default function ChatDrawer({ slug, isOpen: externalIsOpen, onToggle }: C
 
 	return (
 		<>
+			{/* Mobile backdrop */}
+			{isOpen && (
+				<div
+					className="lg:hidden fixed inset-0 bg-black/50 z-40"
+					onClick={toggle}
+				/>
+			)}
+
+			{/* Mobile toggle button */}
+			<button
+				onClick={toggle}
+				className={`lg:hidden fixed bottom-4 right-4 z-50 w-12 h-12 rounded-full bg-[var(--accent)] text-[var(--bg)] flex items-center justify-center shadow-lg transition-opacity ${
+					isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+				}`}
+				aria-label="Open AI chat"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+					<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+				</svg>
+			</button>
+
 			{/* Drawer */}
 			<div
-				className={`fixed top-0 right-0 h-full w-[320px] bg-[var(--bg)] border-l border-[var(--border)] z-30 flex flex-col transition-transform duration-300 ${
+				className={`fixed top-0 right-0 h-full bg-[var(--bg)] border-l border-[var(--border)] flex flex-col transition-transform duration-300 z-50 w-[85vw] max-w-[320px] lg:w-[320px] lg:z-30 ${
 					isOpen ? 'translate-x-0' : 'translate-x-full'
-				} lg:w-[320px] max-lg:w-full`}
+				}`}
 			>
 				{/* Header */}
 				<div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
