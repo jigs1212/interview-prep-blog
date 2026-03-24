@@ -5,7 +5,7 @@ import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkHtml from 'remark-html'
 import readingTime from 'reading-time'
-import { addHeadingIds, extractToc, extractFaqs } from './toc'
+import { addHeadingIds, wrapTables, extractToc, extractFaqs } from './toc'
 import type { BlogPost, PaginatedResult, CategoryCount, TagCount } from '@/types/blog'
 
 export const POSTS_PER_PAGE = 10
@@ -31,7 +31,7 @@ export function getAllPosts(): BlogPost[] {
 		const filePath = path.join(contentDir, filename)
 		const raw = fs.readFileSync(filePath, 'utf-8')
 		const { data, content } = matter(raw)
-		const html = addHeadingIds(parseMarkdown(content))
+		const html = wrapTables(addHeadingIds(parseMarkdown(content)))
 		const stats = readingTime(content)
 		const toc = extractToc(html)
 		const faqs = extractFaqs(html)

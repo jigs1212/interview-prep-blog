@@ -53,11 +53,6 @@ export default function Header({ categories, tags }: HeaderProps) {
 								</svg>
 							)}
 						</button>
-						<Link href="/" className="lg:hidden font-semibold text-[var(--fg)]">
-							<span className="text-[var(--accent)] font-mono">[</span>
-							Interview Hub
-							<span className="text-[var(--accent)] font-mono">]</span>
-						</Link>
 					</div>
 
 				<SearchBar />

@@ -25,7 +25,7 @@ export default function ArticleLayout({ slug, toc, children }: ArticleLayoutProp
 			</aside>
 
 			{/* Main article content — semi-transparent backdrop so grid shows through */}
-			<article className="min-w-0 rounded-lg px-6 py-6 bg-[var(--bg)]/80 backdrop-blur-sm">
+			<article className="min-w-0 rounded-lg px-3 py-4 sm:px-6 sm:py-6 bg-[var(--bg)]/80 backdrop-blur-sm overflow-x-hidden">
 				{children}
 			</article>
 

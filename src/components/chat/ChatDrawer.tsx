@@ -125,7 +125,7 @@ export default function ChatDrawer({ slug, isOpen: externalIsOpen, onToggle }: C
 
 			{/* Drawer */}
 			<div
-				className={`fixed top-0 right-0 h-full bg-[var(--bg)] border-l border-[var(--border)] flex flex-col transition-transform duration-300 z-50 w-[85vw] max-w-[320px] lg:w-[320px] lg:z-30 ${
+				className={`fixed top-0 right-0 h-full bg-[var(--bg)] border-l border-[var(--border)] flex flex-col transition-transform duration-300 z-50 w-full sm:w-[320px] lg:w-[320px] lg:z-30 ${
 					isOpen ? 'translate-x-0' : 'translate-x-full'
 				}`}
 			>

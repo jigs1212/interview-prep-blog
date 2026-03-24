@@ -1,6 +1,10 @@
 import type { TocItem, FaqItem } from '@/types/blog'
 import { slugify } from '@/lib/utils'
 
+export function wrapTables(htmlContent: string): string {
+	return htmlContent.replace(/<table>/g, '<div class="table-wrapper"><table>').replace(/<\/table>/g, '</table></div>')
+}
+
 export function addHeadingIds(htmlContent: string): string {
 	return htmlContent.replace(/<h([23])([^>]*)>(.*?)<\/h[23]>/gi, (_match, level, attrs, inner) => {
 		const text = inner.replace(/<[^>]*>/g, '').trim()
