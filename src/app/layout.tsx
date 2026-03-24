@@ -48,7 +48,7 @@ export default function RootLayout({
 						<div className="flex-1 lg:ml-[260px] flex flex-col min-h-screen">
 							<Header categories={categories} tags={tags} />
 						<main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-							<div className="max-w-5xl mx-auto">
+							<div className="max-w-6xl mx-auto">
 								{children}
 							</div>
 						</main>

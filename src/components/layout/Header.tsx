@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import SearchBar from '@/components/search/SearchBar'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 import ContrastToggle from '@/components/ui/ContrastToggle'
@@ -13,13 +14,29 @@ interface HeaderProps {
 	tags?: TagCount[]
 }
 
+const NON_ARTICLE_PREFIXES = ['/', '/category/', '/tag/', '/page/', '/senior-']
+
+function isArticlePath(pathname: string): boolean {
+	if (pathname === '/') return false
+	return !NON_ARTICLE_PREFIXES.some(prefix =>
+		prefix === '/' ? pathname === '/' : pathname.startsWith(prefix)
+	)
+}
+
 export default function Header({ categories, tags }: HeaderProps) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+	const [isMac, setIsMac] = useState(false)
+	const pathname = usePathname()
+	const showShortcut = isArticlePath(pathname)
+
+	useEffect(() => {
+		setIsMac(/Mac|iPhone|iPad|iPod/.test(navigator.platform))
+	}, [])
 
 	return (
 		<>
-			<header className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur border-b border-[var(--border)]">
-				<div className="flex items-center justify-between px-6 py-3 sm:px-10 lg:px-16 xl:px-24">
+			<header className="sticky top-0 z-40 bg-[var(--bg)]/95 backdrop-blur">
+				<div className="flex items-center justify-between h-[60px] px-6 sm:px-10 lg:px-16 xl:px-24 border-b border-[var(--border)]">
 					<div className="flex items-center gap-3">
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -44,13 +61,16 @@ export default function Header({ categories, tags }: HeaderProps) {
 					</div>
 
 				<SearchBar />
-				<div className="flex items-center gap-0.5 ml-2">
-					<span className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[var(--fg-muted)] border border-[var(--border)] rounded mr-1">
-						⌘L
+			<div className="flex items-center gap-1 ml-2">
+				{showShortcut && (
+					<span className="hidden lg:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded border border-[var(--accent-border)] bg-[var(--accent-muted)] text-[var(--accent)] mr-1 select-none">
+						<span className="opacity-70">AI</span>
+						<span className="border-l border-[var(--accent-border)] pl-1">{isMac ? '⌘L' : 'Ctrl+L'}</span>
 					</span>
-					<ContrastToggle />
-					<ThemeToggle />
-				</div>
+				)}
+				<ContrastToggle />
+				<ThemeToggle />
+			</div>
 				</div>
 			</header>
 
@@ -63,7 +83,7 @@ export default function Header({ categories, tags }: HeaderProps) {
 					/>
 					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-[var(--bg)] overflow-y-auto sidebar-scroll border-r border-[var(--border)]">
 					{/* Header */}
-					<div className="px-5 py-3 min-h-[60px] flex flex-col justify-center border-b border-[var(--border)]">
+					<div className="px-5 h-[60px] flex flex-col justify-center border-b border-[var(--border)]">
 							<div className="flex items-center justify-between">
 								<div>
 									<h2 className="text-[var(--fg)] text-base font-bold">
