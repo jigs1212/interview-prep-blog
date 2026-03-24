@@ -1,5 +1,20 @@
 [
   {
+    "slug": "react-state-immutability-mutation-pitfalls",
+    "title": "React State Immutability: Why Mutating State Directly Breaks Your App",
+    "description": "Understand React state immutability deeply — covers reference equality, silent re-render failures, useEffect traps, and patterns interviewers test.",
+    "tags": [
+      "react",
+      "useState",
+      "immutability",
+      "hooks",
+      "state-management",
+      "interview-prep"
+    ],
+    "category": "React",
+    "date": "2026-03-24"
+  },
+  {
     "slug": "css-layout-interview-questions",
     "title": "CSS & Layout Interview Questions for Senior Developers",
     "description": "CSS interview prep for senior developers — Flexbox, Grid, specificity, custom properties, responsive design, and CSS architecture patterns.",
