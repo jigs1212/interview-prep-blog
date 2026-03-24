@@ -1,28 +1,44 @@
 [
   {
     "slug": "css-custom-properties-theming",
-    "title": "CSS Custom Properties for Theming: Dark Mode, Contrast & Beyond",
-    "description": "Master CSS custom properties for senior interviews — covers theming architecture, dark mode without flash, high-contrast a11y, and Tailwind integration patterns.",
+    "title": "CSS Custom Properties for Theming Interviews",
+    "description": "CSS custom properties for theming — cascade specificity, @property registration, design tokens, Shadow DOM, and animation for senior interviews.",
     "tags": [
       "css",
       "custom-properties",
-      "dark-mode",
       "theming",
+      "cascade",
+      "design-tokens",
       "accessibility"
     ],
     "category": "CSS",
     "date": "2026-03-25"
   },
   {
+    "slug": "grid-matrix-coding-questions",
+    "title": "Grid and Matrix Coding Questions for Interviews",
+    "description": "Grid and matrix coding questions for interviews — multiplication table, spiral traversal, rotation, transpose, and set zeroes.",
+    "tags": [
+      "matrix",
+      "grid",
+      "coding-questions",
+      "algorithms",
+      "typescript"
+    ],
+    "category": "Coding Questions",
+    "date": "2026-03-25"
+  },
+  {
     "slug": "nextjs-dark-mode-theming",
-    "title": "Dark Mode Without Flash: Next.js Theming with CSS Custom Properties",
-    "description": "Build a flash-free dark mode and high-contrast theme system in Next.js — design tokens, data-attribute selectors, Tailwind integration, and real component patterns.",
+    "title": "Dark Mode Without Flash in Next.js",
+    "description": "Build a flash-free dark mode in Next.js — blocking script, SSR hydration, toggle components, and Tailwind token integration.",
     "tags": [
       "nextjs",
       "dark-mode",
-      "css-custom-properties",
-      "theming",
-      "accessibility"
+      "tailwind",
+      "ssr",
+      "hydration",
+      "theming"
     ],
     "category": "Next.js",
     "date": "2026-03-25"
