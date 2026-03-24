@@ -38,8 +38,8 @@ export default function Sidebar({ categories, tags }: SidebarProps) {
 
 	return (
 		<aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:w-[260px] lg:flex lg:flex-col h-screen overflow-y-auto sidebar-scroll bg-[var(--bg)] border-r border-[var(--border)]">
-			{/* Header */}
-			<div className="px-5 pt-6 pb-4 border-b border-[var(--border)]">
+			{/* Header — height matches the sticky page header so borders align */}
+			<div className="px-5 py-3 min-h-[60px] flex flex-col justify-center border-b border-[var(--border)]">
 				<Link href="/" className="block">
 					<h1 className="text-[var(--fg)] text-base font-bold">
 						<span className="text-[var(--accent)] font-mono">[</span>

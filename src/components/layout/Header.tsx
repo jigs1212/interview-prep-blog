@@ -43,12 +43,14 @@ export default function Header({ categories, tags }: HeaderProps) {
 						</Link>
 					</div>
 
-					<SearchBar />
-					<span className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[var(--fg-muted)] border border-[var(--border)] rounded">
+				<SearchBar />
+				<div className="flex items-center gap-0.5 ml-2">
+					<span className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[var(--fg-muted)] border border-[var(--border)] rounded mr-1">
 						⌘L
 					</span>
 					<ContrastToggle />
 					<ThemeToggle />
+				</div>
 				</div>
 			</header>
 
@@ -60,8 +62,8 @@ export default function Header({ categories, tags }: HeaderProps) {
 						onClick={() => setMobileMenuOpen(false)}
 					/>
 					<aside className="absolute left-0 top-0 bottom-0 w-[260px] bg-[var(--bg)] overflow-y-auto sidebar-scroll border-r border-[var(--border)]">
-						{/* Header */}
-						<div className="px-5 pt-6 pb-4 border-b border-[var(--border)]">
+					{/* Header */}
+					<div className="px-5 py-3 min-h-[60px] flex flex-col justify-center border-b border-[var(--border)]">
 							<div className="flex items-center justify-between">
 								<div>
 									<h2 className="text-[var(--fg)] text-base font-bold">
