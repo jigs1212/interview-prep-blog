@@ -12,7 +12,7 @@ export default function Footer() {
 						href="https://jigarlodaya.online"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-[var(--accent)] hover:underline font-medium"
+						className="text-[var(--accent)] hover:text-[var(--accent-hover)] hover:underline font-medium transition-colors"
 					>
 						Jigar Lodaya
 					</a>

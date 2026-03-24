@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import type { BlogPost } from '@/types/blog'
-import CategoryBadge from '@/components/ui/CategoryBadge'
 
 interface RelatedPostsProps {
 	posts: BlogPost[]
@@ -19,9 +18,9 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 						href={`/${post.slug}/`}
 						className="block p-4 rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] hover:border-[var(--accent-border)] hover:shadow-[0_0_16px_var(--accent-glow)] transition-all"
 					>
-						<div className="mb-2">
-							<CategoryBadge name={post.category} />
-						</div>
+						<span className="inline-block text-xs font-medium px-2.5 py-1 rounded mb-2 bg-[var(--accent-muted)] text-[var(--accent)]">
+							{post.category}
+						</span>
 						<h4 className="font-medium mb-1">{post.title}</h4>
 						<p className="text-sm text-[var(--fg-muted)] line-clamp-2">
 							{post.description}

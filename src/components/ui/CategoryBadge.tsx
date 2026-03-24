@@ -1,16 +1,8 @@
 import Link from 'next/link'
+import { slugify } from '@/lib/utils'
 
 interface CategoryBadgeProps {
 	name: string
-}
-
-function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.replace(/[^a-z0-9\s-]/g, '')
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-')
-		.trim()
 }
 
 export default function CategoryBadge({ name }: CategoryBadgeProps) {

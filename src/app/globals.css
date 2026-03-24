@@ -60,6 +60,9 @@
 body {
 	color: var(--fg);
 	background: var(--bg);
+	background-image:
+		repeating-linear-gradient(0deg, transparent, transparent 40px, var(--accent-muted) 40px, var(--accent-muted) 41px),
+		repeating-linear-gradient(90deg, transparent, transparent 40px, var(--accent-muted) 40px, var(--accent-muted) 41px);
 	font-size: 1.125rem;
 	line-height: 1.75;
 }
