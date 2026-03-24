@@ -38,3 +38,4 @@ next-env.d.ts
 # generated files
 public/og/*.png
 public/search-index.json
+public/article-sections/

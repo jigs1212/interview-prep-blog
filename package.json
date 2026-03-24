@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npx tsx scripts/generate-search-index.ts",
+    "predev": "npx tsx scripts/generate-search-index.ts && npx tsx scripts/generate-article-sections.ts",
     "dev": "next dev",
     "generate:og": "npx tsx scripts/generate-og-images.ts",
-    "prebuild": "npm run generate:og && npx tsx scripts/generate-search-index.ts",
+    "prebuild": "npm run generate:og && npx tsx scripts/generate-search-index.ts && npx tsx scripts/generate-article-sections.ts",
     "build": "next build",
     "serve": "npx serve out -l 3000",
     "start": "next start",
