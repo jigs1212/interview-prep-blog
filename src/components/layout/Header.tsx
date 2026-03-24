@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import SearchBar from '@/components/search/SearchBar'
 import ThemeToggle from '@/components/ui/ThemeToggle'
+import ContrastToggle from '@/components/ui/ContrastToggle'
 import { slugify } from '@/lib/utils'
 import type { CategoryCount, TagCount } from '@/types/blog'
 
@@ -43,6 +44,10 @@ export default function Header({ categories, tags }: HeaderProps) {
 					</div>
 
 					<SearchBar />
+					<span className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[var(--fg-muted)] border border-[var(--border)] rounded">
+						⌘L
+					</span>
+					<ContrastToggle />
 					<ThemeToggle />
 				</div>
 			</header>
